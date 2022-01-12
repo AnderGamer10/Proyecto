@@ -28,7 +28,6 @@ crearNodos();
 //Funcion para crear los nodos 
 function crearNodos(){
     for(i = 0; i < aDatos.length;i++){
-        
         let marker = L.marker([aDatos[i].GpxY, aDatos[i].GpxX]).addTo(mapa);
         marker.bindPopup(`${aDatos[i].Nombre}`);   
 
@@ -54,7 +53,9 @@ function añadir(e) {
                 crearDiv += 
                 `
                 <div id="opcion${id}" class="opcionElegida">
-                    <p>${aDatos[i].Nombre}</p>
+                    <div id="elegida-info">
+                        <p>${aDatos[i].Nombre}</p>
+                    </div>
                 </div>
                 `;
                 document.getElementById("seleccionados").innerHTML += crearDiv;
