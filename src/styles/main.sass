@@ -1,17 +1,20 @@
 *
     font-family: 'Quicksand', sans-serif
- 
 body
-    height: 100%
+    height: 98vh 
     width: 100%
+header
+    height: 10%
 #container
+    height: 80%
     width: 95%
     display: flex
     flex-direction: row
     margin: auto
 #map-info
-    height: 800px
-    width: 900px
+    height: 100%
+    width: 50%
+    margin: auto
     #map 
         height: 95%
         width: 100%
@@ -27,8 +30,8 @@ body
         p
             margin: auto
 #panel
-    height: 800px
-    width: 900px
+    height: 100%
+    width: 45%
     border: 2px solid
     margin: auto
     display: flex
@@ -54,7 +57,7 @@ body
         margin-right: 5px
 
 #division
-    margin-bottom: 30px
+    margin-bottom: 10px
 
 #seleccionados
     display: flex
@@ -76,14 +79,22 @@ body
     box-shadow: 5px 5px 5px #888
 
 footer
+    height: 10%
     position: fixed
     width: 100%
     #copy
         margin-left: 25px
-
     #links
         margin-right: 25px
         .bi
             margin: 5px
         i
             font-size: 30px
+
+
+/*------------------------ Tamaños movil, tablet... ------------------------*/
+@media (max-width: 720px)
+    #container
+        flex-direction: column
+    footer
+        position: inherit
