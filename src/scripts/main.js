@@ -71,7 +71,7 @@ function añadir(e) {
             "ui-droppable-hover": "ui-state-hover"
           },
         drop: function(event,ui){
-            $(".opcionElegida")
+            $(this)
             .find( "p" )
               .html( "Dropped!" );
         }
