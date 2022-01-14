@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import { marker } from 'leaflet';
 
 //mapa
 const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898],11);
@@ -23,25 +24,27 @@ var redIcon = new L.Icon({
     shadowSize: [41, 41]
   });
 
+var blueIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
 crearNodos();
 
 //Funcion para crear los nodos 
 function crearNodos(){
-    for(i = 0; i < aDatos.length;i++){
-        let marker = L.marker([aDatos[i].GpxY, aDatos[i].GpxX]).addTo(mapa);
-        marker.bindPopup(`${aDatos[i].Nombre}`);   
-
+    for(let i = 0; i < aDatos.length;i++){
+        let marker = L.marker([aDatos[i].GpxY, aDatos[i].GpxX], {myId: aDatos[i].Id}).bindPopup(`${aDatos[i].Nombre}`).addTo(mapa); 
         marker.on("click", añadir);
-        
     }
 };
 
 //Funcion para saber que marcador a clicado
 function añadir(e) {
     let sValorNombre = e.target.getPopup().getContent();
-    /*-----------  Por hacer -----------
-    En esta funcion se obtendra los valores de la temperatura
-    */ 
     for(let i = 0; i < aDatos.length;i++){
         if(sValorNombre == aDatos[i].Nombre){
             id = aDatos[i].Id;
@@ -52,9 +55,10 @@ function añadir(e) {
                 let crearDiv = "";
                 crearDiv += 
                 `
-                <div id="opcion${id}" class="opcionElegida">
+                <div id="${id}" class="opcionElegida">
                     <div id="elegida-info">
                         <p>${aDatos[i].Nombre}</p>
+                        <button type="button" class="btn-close" aria-label="Close"></button>
                     </div>
                 </div>
                 `;
@@ -64,19 +68,29 @@ function añadir(e) {
         }
     }
 
-    //Activamos el droppable de las opciones elegidas
-    $(".opcionElegida").droppable({
-        classes: {
-            "ui-droppable-active": "ui-state-highlight",
-            "ui-droppable-hover": "ui-state-hover"
-          },
-        drop: function(event,ui){
-            $(this)
-            .find( "p" )
-              .html( "Dropped!" );
-        }
-    })
-    console.log(id);
+//Borramos el seleccionado
+$(".btn-close").click(function(e){
+    let idx = seleccionados.indexOf(e.target.closest(".opcionElegida").id)
+    if(idx != -1)
+        seleccionados.splice(idx,1);
+        
+    $(this).closest(".opcionElegida").remove();
+});
+
+
+//Activamos el droppable de las opciones elegidas
+$(".opcionElegida").droppable({
+    classes: {
+        "ui-droppable-active": "ui-state-highlight",
+        "ui-droppable-hover": "ui-state-hover"
+        },
+    drop: function(event,ui){
+        $(this)
+        .find( "p" )
+            .html( "Dropped!" );
+    }
+})
+console.log(id);
 };
 
 //Activamos el draggable en las imagenes de las opciones
