@@ -1,26 +1,123 @@
 *
     font-family: 'Quicksand', sans-serif
 body
-    height: 98vh 
+    height: 100vh 
     width: 100%
+    background-color: #e9dddd
 header
     height: 10%
+    h1
+        color: white
+        text-align: center
+
+//Contenedor principal
 #container
-    height: 80%
-    width: 95%
+    height: 77%
+    width: 70%
     display: flex
     flex-direction: row
     margin: auto
-#map-info
+    margin-top: 10px
+    background-color: white
+
+//Lado izquierdo del contenedor(informacion...)
+#informacion-opciones
+    width: 20% 
     height: 100%
-    width: 50%
+    margin: 5px
+    #informacion
+        //border: 1px solid
+        height: 70%
+        width: 80%
+        margin-left: auto
+        margin-right: auto
+        margin-top: 15% 
+        //margin-left: 30%
+        //margin-bottom: 5px
+        hr
+            width: 70%
+        .container-informacion
+            .datos
+                display: none
+                margin: auto
+                p
+                text-align: justify
+                color:black
+                font-size: 16px
+            .nombre-dato
+                width: 50%
+                margin-left: 5px
+                color: #353535
+                display: flex
+                flex-direction: row
+                .bi
+                    margin-left: 3px
+                    margin-top: 3px
+                h4:hover
+                    color: #272727
+                    font-weight: bolder
+    #imagenes
+        //border: 1px solid
+        margin: auto
+        display: flex
+        flex-direction: column
+        width: 50%
+        height: 30%
+        .img-sep
+            margin-left: auto
+            margin-right: auto
+            margin-top: 20%
+            display: flex
+            flex-direction: row
+        img 
+            width: 55px
+            height: 55px
+            margin: auto
+            p
+                margin-right: 5px
+
+//Lado derecho del contenedor (mapa...)    
+#map-info-seleccionados
+    height: 100%
+    width: 70%
     margin: auto
+    #filtro
+        height: 10%
+        width: 100%
+        border: 1px solid
+        margin: 5px
+        border-radius: 25px
     #map 
-        height: 95%
+        height: 55%
         width: 100%
         box-shadow: 5px 5px 5px #888
         border-radius: 25px
-    #info  
+        margin: 5px
+    #seleccionados
+        display: flex
+        flex-direction: row
+        height: 30%
+        width: 100%
+        //border: 1px solid
+        margin: 5px
+        .opcionElegida
+            width: 24%
+            height: 80%
+            border: 1px solid
+            margin: auto
+            border-radius: 15px
+            #elegida-info
+                margin-left: 5px
+                margin-right: 5px
+                display: flex
+                flex-direction: row
+                /*.btn-close
+                    align-items: end
+                    text-align: end
+                    justify-content: end*/
+        .opcionElegida:hover
+            box-shadow: 5px 5px 5px #888
+    #info-selec-marc 
         display: flex
         flex-direction: row
         margin: auto
@@ -29,57 +126,8 @@ header
         height: 4%
         p
             margin: auto
-#panel
-    height: 100%
-    width: 45%
-    border: 2px solid
-    margin: auto
-    display: flex
-    flex-direction: column
-    border-radius: 25px
-
-#opciones
-    width: 100%
-    height: 12%
-    display: flex
-    flex-direction: column
-    #texto
-        display: flex
-        flex-direction: row
-        margin: auto
-    #imagenes
-        margin: auto
-    img 
-        width: 55px
-        height: 55px
-        margin-right: 5px
-    p
-        margin-right: 5px
-
-#division
-    margin-bottom: 10px
-
-#seleccionados
-    display: flex
-    flex-direction: column
-
-.opcionElegida
-    width: 90%
-    height: 120px
-    border: 1px solid
-    margin: auto
-    margin-top: 5px
-    //box-shadow: 5px 5px 5px #888
-    border-radius: 15px
-    #elegida-info
-        margin-left: 5px
-        margin-right: 5px
-
-.opcionElegida:hover
-    box-shadow: 5px 5px 5px #888
-
 footer
-    height: 10%
+    height: 13%
     position: fixed
     width: 100%
     #copy
@@ -93,8 +141,12 @@ footer
 
 
 /*------------------------ Tamaños movil, tablet... ------------------------*/
-@media (max-width: 720px)
+/*
+    @media (max-width: 720px)
     #container
         flex-direction: column
     footer
-        position: inherit
+        position: inherit*/
+
+
+
