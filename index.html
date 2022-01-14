@@ -17,35 +17,63 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,600,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header class="bg-dark ">
         <h1>Mapa iteractivo</h1>
     </header>
     <div id="container">
-        <div id="map-info">
-            <div id="map">
-
-            </div>
-            <div id="info">
-                <p>🔴Seleccionado</p>
-                <p>🔵No seleccionado</p>
-            </div>
-        </div>
-        <div id="panel">
-            <div id="opciones">
-                <div id="texto">
-                    <p>Temperatura</p>
-                    <p>Humedad</p>
-                    <p>Viento</p>
-                    <p>Precipitacion</p>
+        <div id="informacion-opciones">
+            <div id="informacion">
+                <h2>Informacion</h2>
+                <div class="container-informacion" id="container-datos1">
+                    <div class="nombre-dato"><h4>Temperatura</h4></div>
+                    <div class="datos" id="contenido1">
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                    </div>
                 </div>
-                <div id="imagenes">
+                <hr>
+                <div class="container-informacion" id="container-datos2">
+                    <div class="nombre-dato"><h4>Humedad</h4></div>
+                    <div class="datos" id="contenido2">
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="container-informacion" id="container-datos3">
+                    <div class="nombre-dato"><h4>Viento</h4></div>
+                    <div class="datos" id="contenido3">
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="container-informacion" id="container-datos4">
+                    <div class="nombre-dato"><h4>Precipitacion</h4></div>
+                    <div class="datos" id="contenido4">
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div id="imagenes">
+                <div class="img-sep">
                     <img id="temperature" src="src/images/thermometer.png" alt="">
                     <img id="humidity" src="src/images/humedad.png" alt="">
+                </div>
+                <div class="img-sep">
                     <img id="wind" src="src/images/wind.png" alt="">
                     <img id="raining" src="src/images/raining.png" alt="">
                 </div>
+                
             </div>
-            <hr id="division">
+        </div>
+        <div id="map-info-seleccionados">
+            <div id="filtro">
+                <h2>Filtro estaciones</h2>
+            </div>
+            <div id="map"></div>
+            <div id="info-selec-marc">
+                <p>🔴Seleccionado</p>
+                <p>🔵No seleccionado</p>
+            </div>
             <div id="seleccionados"></div>
         </div>
     </div>

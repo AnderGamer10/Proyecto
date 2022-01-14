@@ -46,7 +46,7 @@ function añadir(e) {
         if(sValorNombre == aDatos[i].Nombre){
             id = aDatos[i].Id;
             //Se añadira a un array para saber si esta dentro o no
-            if(seleccionados.indexOf(id) == -1 && seleccionados.length < 5){
+            if(seleccionados.indexOf(id) == -1 && seleccionados.length < 4){
                 e.target.setIcon(redIcon);
                 seleccionados.push(id);
                 let crearDiv = "";
@@ -87,3 +87,38 @@ $(function(){
     $("#raining").draggable({ revert: true });
 });
 
+
+
+
+$(".contenido").hide();
+//slide toggle para el ejercicio
+$(document).ready(function () {
+    $("#container-datos1").click(function(){
+        $("#contenido1").slideToggle(1000);
+        
+        $("#contenido2").slideUp(1000);
+        $("#contenido3").slideUp(1000);
+        $("#contenido4").slideUp(1000);
+    });
+    $("#container-datos2").click(function(){
+        $("#contenido2").slideToggle(1000);
+
+        $("#contenido1").slideUp(1000);
+        $("#contenido3").slideUp(1000);
+        $("#contenido4").slideUp(1000);
+    });
+    $("#container-datos3").click(function(){
+        $("#contenido3").slideToggle(1000);
+
+        $("#contenido2").slideUp(1000);
+        $("#contenido1").slideUp(1000);
+        $("#contenido4").slideUp(1000);
+    });
+    $("#container-datos4").click(function(){
+        $("#contenido4").slideToggle(1000);
+
+        $("#contenido2").slideUp(1000);
+        $("#contenido3").slideUp(1000);
+        $("#contenido1").slideUp(1000);
+    });
+});
