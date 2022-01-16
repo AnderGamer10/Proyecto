@@ -33,6 +33,7 @@ var blueIcon = new L.Icon({
     shadowSize: [41, 41]
   });
 crearNodos();
+almacenados();
 
 //Funcion para crear los nodos 
 function crearNodos(){
@@ -48,32 +49,64 @@ function añadir(e) {
     for(let i = 0; i < aDatos.length;i++){
         if(sValorNombre == aDatos[i].Nombre){
             id = aDatos[i].Id;
-            //Se añadira a un array para saber si esta dentro o no
+            //Se añadira a un array para saber si esta seleccionado 
             if(seleccionados.indexOf(id) == -1 && seleccionados.length < 4){
+                localStorage.setItem(`${aDatos[i].Nombre}`, aDatos[i].Id)
                 e.target.setIcon(redIcon);
                 seleccionados.push(id);
-                let crearDiv = "";
-                crearDiv += 
-                `
-                <div id="${id}" class="opcionElegida">
-                    <div id="elegida-info">
-                        <p>${aDatos[i].Nombre}</p>
-                        <button type="button" class="btn-close" aria-label="Close"></button>
-                    </div>
-                </div>
-                `;
-                document.getElementById("seleccionados").innerHTML += crearDiv;
+                crearSeleccionado(aDatos[i].Id);
             }
             break;
         }
     }
+    console.log(id);
+}
 
-//Borramos el seleccionado
+function almacenados(){
+    if(localStorage.length != null){
+        var valor = [],
+        keys = Object.keys(localStorage);
+
+        for(let i = 0; i < localStorage.length;i++){
+            let valorId = localStorage.getItem(keys[i]);
+            seleccionados.push(valorId);
+            crearSeleccionado(valorId);
+        }
+    }
+}
+
+function crearSeleccionado(id){
+    for(let i = 0; i < aDatos.length;i++){
+        if(aDatos[i].Id == id){
+            let crearDiv = 
+            `
+            <div id="${id}" class="opcionElegida">
+                <div id="elegida-info">
+                    <p>${aDatos[i].Nombre}</p>
+                    <button type="button" class="btn-close" aria-label="Close"></button>
+                </div>
+            </div>
+            `;
+            document.getElementById("seleccionados").innerHTML += crearDiv;
+        }
+        
+    } 
+}
+
+//Borramos el seleccionado ----------------------Borrado de local storage por hacer
 $(".btn-close").click(function(e){
-    let idx = seleccionados.indexOf(e.target.closest(".opcionElegida").id)
+    //Obtenemos el id y posicion del id en seleccionados
+    let id = e.target.closest(".opcionElegida").id;
+    let idx = seleccionados.indexOf(id);
     if(idx != -1)
         seleccionados.splice(idx,1);
-        
+
+    //Borramos del local storage
+    for(let i = 0; i < aDatos.length;i++){
+        if(aDatos[i].Id == id){
+            localStorage.removeItem(`${aDatos[i].Nombre}`);
+        }
+    }
     $(this).closest(".opcionElegida").remove();
 });
 
@@ -89,9 +122,8 @@ $(".opcionElegida").droppable({
         .find( "p" )
             .html( "Dropped!" );
     }
-})
-console.log(id);
-};
+});
+
 
 //Activamos el draggable en las imagenes de las opciones
 $(function(){
