@@ -78,19 +78,19 @@ function crearSeleccionado(id) {
                     <h3>${aDatos[i].Nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
-                <div class="mostrar-info" id="divTemperature">
+                <div class="informacion-cuadrado mostrar-info" id="divTemperature">
                     <p>Temperatura:</p>
                     <b><p>20&deg;C</p></b>
                 </div>
-                <div class="mostrar-info" id="divHumidity">
+                <div class="informacion-cuadrado" id="divHumidity">
                     <p>Humedad:</p>
                     <b><p>1</p></b>
                 </div>
-                <div class="mostrar-info" id="divWind">
+                <div class="informacion-cuadrado" id="divWind">
                     <p>Viento:</p>
                     <b><p>4</p></b>
                 </div>
-                <div class="mostrar-info" id="divRaining">
+                <div class="informacion-cuadrado" id="divRaining">
                     <p>Precipitacion:</p>
                     <b><p>0</p></b>
                 </div>
@@ -153,13 +153,14 @@ function activarDroppable() {
         },
         drop: function (event, ui) {
             let id = ui.draggable.attr("id").substring(3)
-            $(this).find(`#div${id}`).html("Dropped!");
+            $(this).find(`#div${id}`).addClass("mostrar-info");
         }
     });
 }
 
 //Activamos el draggable en las imagenes de las opciones
 $(function () {
+    $("#seleccionados").sortable();
     $("#imgTemperature").draggable({ revert: true });
     $("#imgHumidity").draggable({ revert: true });
     $("#imgWind").draggable({ revert: true });
