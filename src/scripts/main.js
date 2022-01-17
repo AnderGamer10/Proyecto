@@ -1,5 +1,4 @@
 import L from 'leaflet';
-import { marker } from 'leaflet';
 
 //mapa
 const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898],11);
@@ -11,7 +10,7 @@ maxZoom: 18
 }).addTo(mapa);
 //Marcadores seleccionados
 seleccionados = [];
-
+marcadores = [];
 var aDatos = JSON.parse(sDatos);
 
 //Variable para cambiar el color de los marcadores
@@ -32,19 +31,20 @@ var blueIcon = new L.Icon({
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
   });
-crearNodos();
-almacenados();
+crearMarcadores();
+almacenadosLocalStorage();
 
 //Funcion para crear los nodos 
-function crearNodos(){
+function crearMarcadores(){
     for(let i = 0; i < aDatos.length;i++){
         let marker = L.marker([aDatos[i].GpxY, aDatos[i].GpxX], {myId: aDatos[i].Id}).bindPopup(`${aDatos[i].Nombre}`).addTo(mapa); 
-        marker.on("click", añadir);
+        marker.on("click", añadirSeleccionado);
+        marcadores.push(marker);
     }
 };
 
 //Funcion para saber que marcador a clicado
-function añadir(e) {
+function añadirSeleccionado(e) {
     let sValorNombre = e.target.getPopup().getContent();
     for(let i = 0; i < aDatos.length;i++){
         if(sValorNombre == aDatos[i].Nombre){
@@ -62,19 +62,25 @@ function añadir(e) {
     console.log(id);
 }
 
-function almacenados(){
+//Obtenemos datos de los almacenados
+function almacenadosLocalStorage(){
     if(localStorage.length != null){
         var valor = [],
         keys = Object.keys(localStorage);
-
         for(let i = 0; i < localStorage.length;i++){
             let valorId = localStorage.getItem(keys[i]);
             seleccionados.push(valorId);
+            for(let i = 0; i < aDatos.length;i++){
+                if(marcadores[i].options.myId == valorId){
+                    marcadores[i].setIcon(redIcon)
+                }
+            }
             crearSeleccionado(valorId);
         }
     }
 }
 
+//Se añade al html el seleccionado
 function crearSeleccionado(id){
     for(let i = 0; i < aDatos.length;i++){
         if(aDatos[i].Id == id){
@@ -85,6 +91,7 @@ function crearSeleccionado(id){
                     <p>${aDatos[i].Nombre}</p>
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
+                
             </div>
             `;
             document.getElementById("seleccionados").innerHTML += crearDiv;
@@ -93,23 +100,24 @@ function crearSeleccionado(id){
     } 
 }
 
-//Borramos el seleccionado ----------------------Borrado de local storage por hacer
-$(".btn-close").click(function(e){
+//Borramos el seleccionado ---------------------------------------No se borra si se añade al momento y lo intentas borrar
+$(".btn-close").on("click", function(){
     //Obtenemos el id y posicion del id en seleccionados
-    let id = e.target.closest(".opcionElegida").id;
+    console.log("1");
+    let id = this.closest(".opcionElegida").id;
     let idx = seleccionados.indexOf(id);
     if(idx != -1)
         seleccionados.splice(idx,1);
-
     //Borramos del local storage
     for(let i = 0; i < aDatos.length;i++){
         if(aDatos[i].Id == id){
             localStorage.removeItem(`${aDatos[i].Nombre}`);
+            marcadores[i].setIcon(blueIcon);
+            break;
         }
     }
     $(this).closest(".opcionElegida").remove();
 });
-
 
 //Activamos el droppable de las opciones elegidas
 $(".opcionElegida").droppable({
@@ -124,7 +132,6 @@ $(".opcionElegida").droppable({
     }
 });
 
-
 //Activamos el draggable en las imagenes de las opciones
 $(function(){
     $("#temperature").draggable({ revert: true });
@@ -132,9 +139,6 @@ $(function(){
     $("#wind").draggable({ revert: true });
     $("#raining").draggable({ revert: true });
 });
-
-
-
 
 $(".contenido").hide();
 //slide toggle para el ejercicio
