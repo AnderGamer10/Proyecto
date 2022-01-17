@@ -8,13 +8,14 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Mi portfolio &copy; <a href="http://185.60.40.210/2daw3/anderr/">Portafolio</a>',
     maxZoom: 18
 }).addTo(mapa);
+//Parseo de datos json
+var aDatos = JSON.parse(sDatos);
 
 //Marcadores seleccionados
-seleccionados = [];
+aSeleccionados = [];
 
 //Todos los marcadores
-marcadores = [];
-var aDatos = JSON.parse(sDatos);
+aMarcadores = [];
 
 //Variables para cambiar el color de los marcadores
 var redIcon = new L.Icon({
@@ -42,7 +43,7 @@ function crearMarcadores() {
     for (let i = 0; i < aDatos.length; i++) {
         let marker = L.marker([aDatos[i].GpxY, aDatos[i].GpxX], { myId: aDatos[i].Id }).bindPopup(`${aDatos[i].Nombre}`).addTo(mapa);
         marker.on("click", añadirSeleccionado);
-        marcadores.push(marker);
+        aMarcadores.push(marker);
     }
 };
 
@@ -51,12 +52,12 @@ function añadirSeleccionado(e) {
     let sValorNombre = e.target.getPopup().getContent();
     for (let i = 0; i < aDatos.length; i++) {
         if (sValorNombre == aDatos[i].Nombre) {
-            id = aDatos[i].Id;
+            let sId = aDatos[i].Id;
             //Se añadira a un array para saber si esta seleccionado 
-            if (seleccionados.indexOf(id) == -1 && seleccionados.length < 4) {
+            if (aSeleccionados.indexOf(sId) == -1 && aSeleccionados.length < 4) {
                 localStorage.setItem(`${aDatos[i].Nombre}`, aDatos[i].Id)
                 e.target.setIcon(redIcon);
-                seleccionados.push(id);
+                aSeleccionados.push(sId);
                 crearSeleccionado(aDatos[i].Id);
                 borrarSeleccionada();
                 activarDroppable();
@@ -64,16 +65,15 @@ function añadirSeleccionado(e) {
             break;
         }
     }
-    console.log(id);
 }
 
 //Se añade al html el seleccionado
-function crearSeleccionado(id) {
+function crearSeleccionado(sId) {
     for (let i = 0; i < aDatos.length; i++) {
-        if (aDatos[i].Id == id) {
-            let crearDiv =
+        if (aDatos[i].Id == sId) {
+            let sCrearDiv =
                 `
-            <div id="${id}" class="opcionElegida">
+            <div id="${sId}" class="opcionElegida">
                 <div id="elegida-info">
                     <h3>${aDatos[i].Nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
@@ -96,7 +96,7 @@ function crearSeleccionado(id) {
                 </div>
             </div>
             `;
-            document.getElementById("seleccionados").innerHTML += crearDiv;
+            document.getElementById("seleccionados").innerHTML += sCrearDiv;
         }
 
     }
@@ -105,17 +105,17 @@ function crearSeleccionado(id) {
 //Obtenemos datos de los almacenados
 function almacenadosLocalStorage() {
     if (localStorage.length != null) {
-        var valor = [],
+        var aValor = [],
             keys = Object.keys(localStorage);
         for (let i = 0; i < localStorage.length; i++) {
-            let valorId = localStorage.getItem(keys[i]);
-            seleccionados.push(valorId);
+            let sValorId = localStorage.getItem(keys[i]);
+            aSeleccionados.push(sValorId);
             for (let i = 0; i < aDatos.length; i++) {
-                if (marcadores[i].options.myId == valorId) {
-                    marcadores[i].setIcon(redIcon)
+                if (aMarcadores[i].options.myId == sValorId) {
+                    aMarcadores[i].setIcon(redIcon)
                 }
             }
-            crearSeleccionado(valorId);
+            crearSeleccionado(sValorId);
             borrarSeleccionada();
             activarDroppable();
         }
@@ -127,15 +127,15 @@ function borrarSeleccionada() {
     $(".btn-close").on("click", function () {
         //Obtenemos el id y posicion del id en seleccionados
         console.log("1");
-        let id = this.closest(".opcionElegida").id;
-        let idx = seleccionados.indexOf(id);
-        if (idx != -1)
-            seleccionados.splice(idx, 1);
+        let sId = this.closest(".opcionElegida").id;
+        let sIdx = aSeleccionados.indexOf(sId);
+        if (sIdx != -1)
+            aSeleccionados.splice(sIdx, 1);
         //Borramos del local storage
         for (let i = 0; i < aDatos.length; i++) {
-            if (aDatos[i].Id == id) {
+            if (aDatos[i].Id == sId) {
                 localStorage.removeItem(`${aDatos[i].Nombre}`);
-                marcadores[i].setIcon(blueIcon);
+                aMarcadores[i].setIcon(blueIcon);
                 break;
             }
         }
@@ -152,8 +152,8 @@ function activarDroppable() {
             "ui-droppable-hover": "ui-state-hover"
         },
         drop: function (event, ui) {
-            let id = ui.draggable.attr("id").substring(3)
-            $(this).find(`#div${id}`).addClass("mostrar-info");
+            let sId = ui.draggable.attr("id").substring(3)
+            $(this).find(`#div${sId}`).addClass("mostrar-info");
         }
     });
 }
