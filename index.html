@@ -17,10 +17,10 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,600,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="bg-dark ">
+    <header class="bg-dark">
         <h1>Mapa iteractivo</h1>
     </header>
-    <div id="container">
+    <div id="container" class="d-flex flex-row bg-white">
         <div id="informacion-opciones">
             <div id="informacion">
                 <h2>Informacion</h2>
@@ -53,12 +53,12 @@
                 </div>
                 <hr>
             </div>
-            <div id="imagenes">
-                <div class="img-sep">
+            <div id="imagenes" class="d-flex flex-column">
+                <div class="img-sep d-flex flex-row">
                     <img id="imgTemperature" src="src/images/thermometer.png" alt="">
                     <img id="imgHumidity" src="src/images/humedad.png" alt="">
                 </div>
-                <div class="img-sep">
+                <div class="img-sep d-flex flex-row">
                     <img id="imgWind" src="src/images/wind.png" alt="">
                     <img id="imgRaining" src="src/images/raining.png" alt="">
                 </div>
@@ -73,10 +73,10 @@
                 <p>🔴Seleccionado</p>
                 <p>🔵No seleccionado</p>
             </div>
-            <div id="seleccionados"></div>
+            <div id="seleccionados" class="d-flex flex-row"></div>
         </div>
     </div>
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-4 my-4 bg-dark ">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center bg-dark ">
         <div id="copy" class="col-md-4 flex-column align-items-center">
             <span class="text-light">&copy; 2021 Company, Inc</span>
             <div>

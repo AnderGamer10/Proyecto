@@ -160,7 +160,7 @@ function activarDroppable() {
 
 //Activamos el draggable en las imagenes de las opciones
 $(function () {
-    $("#seleccionados").sortable();
+    //$("#seleccionados").sortable();
     $("#imgTemperature").draggable({ revert: true });
     $("#imgHumidity").draggable({ revert: true });
     $("#imgWind").draggable({ revert: true });

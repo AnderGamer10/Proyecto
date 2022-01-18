@@ -4,6 +4,7 @@ body
     height: 100vh 
     width: 100vw
     background-color: #e9dddd
+    overflow-x: hidden
 header
     height: 10%
     h1
@@ -13,12 +14,8 @@ header
 //Contenedor principal
 #container
     height: 77%
-    width: 70%
-    display: flex
-    flex-direction: row
+    width: 80%
     margin: auto
-    margin-top: 10px
-    background-color: white
 
 //Lado izquierdo del contenedor(informacion...)
 #informacion-opciones
@@ -26,14 +23,11 @@ header
     height: 100%
     margin: 5px
     #informacion
-        //border: 1px solid
         height: 70%
         width: 80%
         margin-left: auto
         margin-right: auto
         margin-top: 15% 
-        //margin-left: 30%
-        //margin-bottom: 5px
         hr
             width: 70%
         .container-informacion
@@ -59,16 +53,12 @@ header
     #imagenes
         //border: 1px solid
         margin: auto
-        display: flex
-        flex-direction: column
         width: 50%
         height: 30%
         .img-sep
             margin-left: auto
             margin-right: auto
             margin-top: 20%
-            display: flex
-            flex-direction: row
         img 
             width: 55px
             height: 55px
@@ -94,8 +84,6 @@ header
         border-radius: 25px
         margin: 5px
     #seleccionados
-        display: flex
-        flex-direction: row
         height: 33%
         width: 100%
         //border: 1px solid
@@ -114,11 +102,12 @@ header
             .informacion-cuadrado
                 display: flex
                 flex-direction: row
-                visibility: hidden
+                display: none
                 p
                     margin-left: 5px
             .mostrar-info
-                visibility: visible
+                display: flex
+                flex-wrap: wrap
         .opcionElegida:hover
             box-shadow: 5px 5px 5px #888
     #info-selec-marc 
@@ -132,7 +121,6 @@ header
             margin: auto
 footer
     height: 13%
-    position: fixed
     width: 100%
     #copy
         margin-left: 25px
