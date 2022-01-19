@@ -14,116 +14,111 @@ header
         color: white
         text-align: center
 
-//Contenedor principal
 #container
     height: 80%
     width: 80%
     margin: auto
-
-//Lado izquierdo del contenedor(informacion...)
-#informacion-opciones
-    width: 20% 
-    height: 100%
-    margin: 5px
+    display: flex
+    flex-wrap: wrap
     #informacion
-        height: 70%
-        width: 80%
-        margin-left: auto
-        margin-right: auto
-        margin-top: 15% 
+        width: 20%
+        height: 60%
         hr
             width: 70%
-        .container-informacion
-            .datos
-                display: none
+        #container-info
+            margin-left: 30px
+            margin-top: 20px
+            .container-informacion
+                .datos
+                    display: none
+                    margin: auto
+                    p
+                        text-align: justify
+                        color: black
+                        font-size: 16px
+                .nombre-dato
+                    width: 50%
+                    margin-left: 5px
+                    color: #353535
+                    display: flex
+                    flex-direction: row
+                    .bi
+                        margin-left: 3px
+                        margin-top: 3px
+                    h4:hover
+                        color: #272727
+                        font-weight: bolder
+    #filtro-map-info
+        width: 80%
+        height: 60%
+        #filtro
+            height: 10%
+            width: 100%
+            border: 1px solid
+            border-radius: 25px
+            margin: 5px
+        #map
+            height: 86%
+            width: 100%
+        #info-selec-marc 
+            display: flex
+            flex-direction: row
+            margin: auto
+            margin-top: 1%
+            width: 30%
+            height: 4%
+            p
+                margin: auto
+    #opciones-seleccionados
+        margin-top: 2%
+        height: 38%
+        width: 100%
+        display: flex
+        flex-direction: row
+        #imagenes
+            margin: auto
+            width: 20%
+            height: 100%
+            .img-sep
+                margin-left: auto
+                margin-right: auto
+                margin-top: 20%
+            img 
+                width: 55px
+                height: 55px
                 margin: auto
                 p
-                    text-align: justify
-                    color: black
-                    font-size: 16px
-            .nombre-dato
-                width: 50%
-                margin-left: 5px
-                color: #353535
-                display: flex
-                flex-direction: row
-                .bi
-                    margin-left: 3px
-                    margin-top: 3px
-                h4:hover
-                    color: #272727
-                    font-weight: bolder
-    #imagenes
-        margin: auto
-        width: 50%
-        height: 30%
-        .img-sep
-            margin-left: auto
-            margin-right: auto
-            margin-top: 20%
-        img 
-            width: 55px
-            height: 55px
-            margin: auto
-            p
-                margin-right: 5px
-
-//Lado derecho del contenedor (mapa...)    
-#map-info-seleccionados
-    height: 100%
-    width: 70%
-    margin: auto
-    #filtro
-        height: 10%
-        width: 100%
-        border: 1px solid
-        margin: 5px
-        border-radius: 25px
-    #map 
-        height: 52%
-        width: 100%
-        box-shadow: 5px 5px 5px #888
-        border-radius: 25px
-        margin: 5px
-    #seleccionados
-        height: 33%
-        width: 100%
-        margin: 5px
-        display: flex
-        flex-direction: row
-        .opcionElegida
-            width: 24%
-            height: 80%
-            border: 1px solid
-            margin: auto
-            border-radius: 15px
-            #elegida-info
-                margin-left: 5px
-                margin-right: 5px
-                display: flex
-                flex-direction: row
-            .informacion-cuadrado
-                display: flex
-                flex-direction: row
-                display: none
-                p
+                    margin-right: 5px
+        #seleccionados
+            width: 80%
+            height: 100%
+            display: flex
+            flex-direction: row
+            .opcionElegida
+                width: 24%
+                height: 80%
+                border: 1px solid
+                margin: auto
+                border-radius: 15px
+                #elegida-info
                     margin-left: 5px
-            .mostrar-info
-                display: flex
-                flex-wrap: wrap
-        .opcionElegida:hover
-            box-shadow: 5px 5px 5px #888
-    #info-selec-marc 
-        display: flex
-        flex-direction: row
-        margin: auto
-        margin-top: 1%
-        width: 30%
-        height: 4%
-        p
-            margin: auto
+                    margin-right: 5px
+                    display: flex
+                    flex-direction: row
+                .informacion-cuadrado
+                    display: flex
+                    flex-direction: row
+                    display: none
+                    p
+                        margin-left: 5px
+                .mostrar-info
+                    display: flex
+                    flex-wrap: wrap
+            .opcionElegida:hover
+                box-shadow: 5px 5px 5px #888
 footer
     height: 10%
+    position: fixed
     width: 100%
     #copy
         margin-left: 25px
@@ -134,19 +129,29 @@ footer
         i
             font-size: 30px
 
+
 @media (max-width: 920px)
-    #informacion-opciones
+    #informacion
         display: none
     #container
         width: 100%
         height: 100%
-    #map-info-seleccionados 
-        width: 100% 
-        #filtro
-            height: 8%
-        #seleccionados
+        #filtro-map-info 
+            width: 100% 
+            #filtro
+                height: 8%
+            #info-selec-marc
+                width: 60%
+        #opciones-seleccionados
             flex-direction: column
-            .opcionElegida
-                width: 80%
-
-
+            #seleccionados
+                flex-direction: column
+                width: 100%
+                .opcionElegida
+                    width: 90%
+            #imagenes
+                width: 40%
+                display: flex
+                flex-direction: row !important
+                #img-sep
+                    flex-direction: row !important
