@@ -3,11 +3,11 @@
 html
     height: 100vh 
     width: 100vw
+    overflow-x: hidden
 body
     height: 100%
     width: 100%
     background-color: #e9dddd
-    overflow-x: hidden
 header
     height: 10%
     h1
@@ -18,15 +18,13 @@ header
     height: 80%
     width: 80%
     margin: auto
-    display: flex
-    flex-wrap: wrap
     #informacion
         width: 20%
         height: 60%
         hr
             width: 70%
         #container-info
-            margin-left: 30px
+            margin-left: 15px
             margin-top: 20px
             .container-informacion
                 .datos
@@ -52,17 +50,21 @@ header
         width: 80%
         height: 60%
         #filtro
-            height: 10%
-            width: 100%
+            height: 14%
+            width: 90%
             border: 1px solid
             border-radius: 25px
-            margin: 5px
+            margin: auto
+            margin-top: 5px
+            margin-bottom: 5px
+            h2
+                margin-left: 10px
         #map
-            height: 86%
-            width: 100%
+            height: 82%
+            width: 95%
+            margin: auto
+            border-radius: 5px
         #info-selec-marc 
-            display: flex
-            flex-direction: row
             margin: auto
             margin-top: 1%
             width: 30%
@@ -73,8 +75,6 @@ header
         margin-top: 2%
         height: 38%
         width: 100%
-        display: flex
-        flex-direction: row
         #imagenes
             margin: auto
             width: 20%
@@ -92,8 +92,6 @@ header
         #seleccionados
             width: 80%
             height: 100%
-            display: flex
-            flex-direction: row
             .opcionElegida
                 width: 24%
                 height: 80%
@@ -103,8 +101,8 @@ header
                 #elegida-info
                     margin-left: 5px
                     margin-right: 5px
-                    display: flex
-                    flex-direction: row
+                    .btn-close
+                        margin-left: auto
                 .informacion-cuadrado
                     display: flex
                     flex-direction: row
@@ -143,15 +141,14 @@ footer
             #info-selec-marc
                 width: 60%
         #opciones-seleccionados
-            flex-direction: column
+            flex-direction: column !important
             #seleccionados
-                flex-direction: column
+                flex-direction: column !important
                 width: 100%
                 .opcionElegida
                     width: 90%
             #imagenes
                 width: 40%
-                display: flex
                 flex-direction: row !important
                 #img-sep
                     flex-direction: row !important

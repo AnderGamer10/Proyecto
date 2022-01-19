@@ -74,7 +74,7 @@ function crearSeleccionado(sId) {
             let sCrearDiv =
                 `
             <div id="${sId}" class="opcionElegida">
-                <div id="elegida-info">
+                <div id="elegida-info" class="d-flex flex-row">
                     <h3>${aDatos[i].Nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
