@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,67 +17,96 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,600,700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <header class="bg-dark ">
+    <header class="bg-dark">
         <h1>Mapa iteractivo</h1>
     </header>
-    <div id="container">
-        <div id="informacion-opciones">
-            <div id="informacion">
+
+    <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+    <div id="container" class="d-flex flex-row flex-wrap bg-white">
+        <div id="informacion">
+            <div id="container-info">
                 <h2>Informacion</h2>
                 <div class="container-informacion" id="container-datos1">
-                    <div class="nombre-dato"><h4>Temperatura</h4><i class="bi bi-caret-down-fill"></i></div>
+                    <div class="nombre-dato">
+                        <h4>Temperatura</h4><i class="bi bi-caret-down-fill"></i>
+                    </div>
                     <div class="datos" id="contenido1">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                        <p>La temperatura es una magnitud escalar que sistematiza la noción vulgar de frío y caliente
+                            haciéndola medible mediante un termómetro</p>
                     </div>
                 </div>
                 <hr>
                 <div class="container-informacion" id="container-datos2">
-                    <div class="nombre-dato"><h4>Humedad</h4><i class="bi bi-caret-down-fill"></i></div>
+                    <div class="nombre-dato">
+                        <h4>Humedad</h4><i class="bi bi-caret-down-fill"></i>
+                    </div>
                     <div class="datos" id="contenido2">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                        <p>Se denomina ''humedad o vapor de agua'' al agua que impregna un cuerpo o al vapor presente en
+                            la atmósfera el cual, por condensación llega a formar las nubes</p>
                     </div>
                 </div>
                 <hr>
                 <div class="container-informacion" id="container-datos3">
-                    <div class="nombre-dato"><h4>Viento</h4><i class="bi bi-caret-down-fill"></i></div>
+                    <div class="nombre-dato">
+                        <h4>Viento</h4><i class="bi bi-caret-down-fill"></i>
+                    </div>
                     <div class="datos" id="contenido3">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                        <p>El viento es el flujo del aire a gran escala en la atmósfera terrestre. En la atmósfera, el
+                            viento es el movimiento en masa del aire de acuerdo con las diferencias de presión
+                            atmosférica. </p>
                     </div>
                 </div>
                 <hr>
                 <div class="container-informacion" id="container-datos4">
-                    <div class="nombre-dato"><h4>Precipitacion</h4><i class="bi bi-caret-down-fill"></i></div>
+                    <div class="nombre-dato">
+                        <h4>Precipitacion</h4><i class="bi bi-caret-down-fill"></i>
+                    </div>
                     <div class="datos" id="contenido4">
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa cum dignissimos fuga corrupti repellendus expedita?</p>
+                        <p>En meteorología, la precipitación es cualquier forma de hidrometeoro que cae de la atmósfera
+                            y llega a la superficie terrestre. Este fenómeno incluye lluvia, llovizna, nieve, aguanieve,
+                            granizo, pero no virga, neblina ni rocío</p>
                     </div>
                 </div>
                 <hr>
             </div>
-            <div id="imagenes">
-                <div class="img-sep">
+
+        </div>
+
+        <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+        <div id="filtro-map-info">
+            <div id="filtro" class="bg-dark text-light">
+                <h2>Filtro estaciones</h2>
+            </div>
+            <div id="map"></div>
+            <div id="info-selec-marc" class="d-flex flex-row">
+                <p>🔴Seleccionado</p>
+                <p>🔵No seleccionado</p>
+            </div>
+        </div>
+
+        <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+        <div id="opciones-seleccionados" class="d-flex flex-row">
+            <div id="imagenes" class="d-flex flex-column">
+                <div class="img-sep d-flex flex-row">
                     <img id="imgTemperature" src="src/images/thermometer.png" alt="">
                     <img id="imgHumidity" src="src/images/humedad.png" alt="">
                 </div>
-                <div class="img-sep">
+                <div class="img-sep d-flex flex-row">
                     <img id="imgWind" src="src/images/wind.png" alt="">
                     <img id="imgRaining" src="src/images/raining.png" alt="">
                 </div>
             </div>
-        </div>
-        <div id="map-info-seleccionados">
-            <div id="filtro">
-                <h2>Filtro estaciones</h2>
-            </div>
-            <div id="map"></div>
-            <div id="info-selec-marc">
-                <p>🔴Seleccionado</p>
-                <p>🔵No seleccionado</p>
-            </div>
-            <div id="seleccionados"></div>
+            <div id="seleccionados" class="d-flex flex-row"></div>
         </div>
     </div>
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-4 my-4 bg-dark ">
+    <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+
+    <footer class="d-flex flex-wrap justify-content-between align-items-center bg-dark ">
         <div id="copy" class="col-md-4 flex-column align-items-center">
             <span class="text-light">&copy; 2021 Company, Inc</span>
             <div>
@@ -84,9 +114,8 @@
                 <a href="http://185.60.40.210/2daw3/anderr/" target="_blank"> Portafolio</a>
             </div>
         </div>
-        
         <ul id="links" class="nav col-md-4 justify-content-end list-unstyled d-flex">
-            <i  class="bi bi-twitter text-light"></i>
+            <i class="bi bi-twitter text-light"></i>
             <i class="bi bi-facebook text-light"></i>
             <i class="bi bi-github text-light"></i>
         </ul>
