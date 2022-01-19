@@ -1,8 +1,11 @@
 *
     font-family: 'Quicksand', sans-serif
-body
+html
     height: 100vh 
     width: 100vw
+body
+    height: 100%
+    width: 100%
     background-color: #e9dddd
     overflow-x: hidden
 header
@@ -51,7 +54,6 @@ header
                     color: #272727
                     font-weight: bolder
     #imagenes
-        //border: 1px solid
         margin: auto
         width: 50%
         height: 30%
@@ -87,6 +89,8 @@ header
         height: 33%
         width: 100%
         margin: 5px
+        display: flex
+        flex-direction: row
         .opcionElegida
             width: 24%
             height: 80%
@@ -130,13 +134,19 @@ footer
         i
             font-size: 30px
 
-@media (max-width: 720px)
-    #seleccionados
-        background-color: red
-
-
-    
-
-
+@media (max-width: 920px)
+    #informacion-opciones
+        display: none
+    #container
+        width: 100%
+        height: 100%
+    #map-info-seleccionados 
+        width: 100% 
+        #filtro
+            height: 8%
+        #seleccionados
+            flex-direction: column
+            .opcionElegida
+                width: 80%
 
 
