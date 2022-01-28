@@ -8,8 +8,6 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Mi portfolio &copy; <a href="http://185.60.40.210/2daw3/anderr/">Portafolio</a>',
     maxZoom: 18
 }).addTo(mapa);
-//Parseo de datos json
-var aDatos = JSON.parse(sDatos);
 
 //Marcadores seleccionados
 aSeleccionados = [];
@@ -35,65 +33,77 @@ var blueIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-crearMarcadores();
-almacenadosLocalStorage();
+/* ---------------------------------------------------------------------Haciendo--------------------------------------------------------------------- */
+function obteniendoDatos() {
+    fetch("https://localhost:5001/api/InformacionTiempoes")
+        .then(response => response.json())
+        .then(aDatos => {
+            console.log(aDatos);
+            crearMarcadores();
 
-//Funcion para crear los nodos 
-function crearMarcadores() {
-    for (let i = 0; i < aDatos.length; i++) {
-        let marker = L.marker([aDatos[i].GpxY, aDatos[i].GpxX], { myId: aDatos[i].Id }).bindPopup(`${aDatos[i].Nombre}`).addTo(mapa);
-        marker.on("click", añadirSeleccionado);
-        aMarcadores.push(marker);
-    }
-};
+            //Funcion para crear los marcadores 
+            function crearMarcadores() {
+                console.log(aDatos[5].nombre)
+                for (let i = 0; i < aDatos.length; i++) {
+                    let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
+                    marker.on("click", añadirSeleccionado);
+                    //marker.click = function() {return añadirSeleccionado(aDatos[i].id,aDatos)};
+                    aMarcadores.push(marker);
+                }
+            };
 
-//Funcion para saber que marcador a clicado
-function añadirSeleccionado(e) {
-    let sValorNombre = e.target.getPopup().getContent();
-    for (let i = 0; i < aDatos.length; i++) {
-        if (sValorNombre == aDatos[i].Nombre) {
-            let sId = aDatos[i].Id;
-            //Se añadira a un array para saber si esta seleccionado 
-            if (aSeleccionados.indexOf(sId) == -1 && aSeleccionados.length < 4) {
-                e.target.setIcon(redIcon);
-                aSeleccionados.push(sId);
-                //localStorage.setItem(`${aDatos[i].Nombre}`, aDatos[i].Id)
-                localStorage.IDs=JSON.stringify(aSeleccionados);
-                crearSeleccionado(aDatos[i].Id);
-                borrarSeleccionada();
-                activarDroppable();
+            //Funcion para saber que marcador a clicado
+            function añadirSeleccionado(e) {
+                var sObtenerNombre = e.target.getPopup().getContent();
+                for (let i = 0; i < aDatos.length; i++) {
+                    if (aDatos[i].nombre == sObtenerNombre) {
+                        let sId = aDatos[i].id;
+                        //Se añadira a un array para saber si esta seleccionado 
+                        if (aSeleccionados.indexOf(sId) == -1 && aSeleccionados.length < 4) {
+                            /* ahora va mal el seticon --------------------------------------------------------------------*/
+                            aMarcadores[i].setIcon(redIcon);
+                            aSeleccionados.push(sId);
+                            localStorage.IDs = JSON.stringify(aSeleccionados);
+                            crearSeleccionado(sId, aDatos);
+                            borrarSeleccionada(aDatos);
+                            activarDroppable();
+                        }
+                        break;
+                    }
+                }
             }
-            break;
-        }
-    }
-}
+            almacenadosLocalStorage(aDatos);
+        })
+};
+obteniendoDatos();
+/* ----------------------------------------------------------------- Fin de Haciendo ------------------------------------------------------------------ */
 
 //Se añade al html el seleccionado
-function crearSeleccionado(sId) {
+function crearSeleccionado(sId, aDatos) {
     for (let i = 0; i < aDatos.length; i++) {
-        if (aDatos[i].Id == sId) {
+        if (aDatos[i].id == sId) {
             let sCrearDiv =
                 `
             <div id="${sId}" class="opcionElegida">
                 <div id="elegida-info" class="d-flex flex-row">
-                    <h3>${aDatos[i].Nombre}</h3>
+                    <h3>${aDatos[i].nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
                 <div class="informacion-cuadrado mostrar-info" id="divTemperature">
                     <p>Temperatura:</p>
-                    <b><p>20&deg;C</p></b>
+                    <b><p>${aDatos[i].temperatura} &deg;C</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divHumidity">
                     <p>Humedad:</p>
-                    <b><p>1</p></b>
+                    <b><p>${aDatos[i].humedad} %</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divWind">
                     <p>Viento:</p>
-                    <b><p>4</p></b>
+                    <b><p>${aDatos[i].velocidadViento} km/h</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divRaining">
                     <p>Precipitacion:</p>
-                    <b><p>0</p></b>
+                    <b><p>${aDatos[i].precipitacionAcumulada} mm=l/m²</p></b>
                 </div>
             </div>
             `;
@@ -104,25 +114,25 @@ function crearSeleccionado(sId) {
 }
 
 //Obtenemos datos de los almacenados
-function almacenadosLocalStorage() {
+function almacenadosLocalStorage(aDatos) {
     if (localStorage.length != null) {
-            aAñadirArray=JSON.parse(localStorage.IDs);
-            for(let i = 0; i < aAñadirArray.length; i++){
-                for (let j = 0; j < aDatos.length; j++) {
-                    if (aMarcadores[j].options.myId == aAñadirArray[i]) {
-                        aMarcadores[j].setIcon(redIcon)
-                    }
+        aAñadirArray = JSON.parse(localStorage.IDs);
+        for (let i = 0; i < aAñadirArray.length; i++) {
+            for (let j = 0; j < aDatos.length; j++) {
+                if (aMarcadores[j].options.myId == aAñadirArray[i]) {
+                    aMarcadores[j].setIcon(redIcon)
                 }
-                aSeleccionados.push(aAñadirArray[i]);
-                crearSeleccionado(aAñadirArray[i]);
             }
-            borrarSeleccionada();
-            activarDroppable();
+            aSeleccionados.push(aAñadirArray[i]);
+            crearSeleccionado(aAñadirArray[i], aDatos);
+        }
+        borrarSeleccionada(aDatos);
+        activarDroppable();
     }
 }
 
 //Borramos el seleccionado
-function borrarSeleccionada() {
+function borrarSeleccionada(aDatos) {
     $(".btn-close").on("click", function () {
         //Obtenemos el id y posicion del id en seleccionados
         console.log("1");
@@ -132,8 +142,8 @@ function borrarSeleccionada() {
             aSeleccionados.splice(sIdx, 1);
         //Borramos del local storage
         for (let i = 0; i < aDatos.length; i++) {
-            if (aDatos[i].Id == sId) {
-                localStorage.IDs=JSON.stringify(aSeleccionados);
+            if (aDatos[i].id == sId) {
+                localStorage.IDs = JSON.stringify(aSeleccionados);
                 aMarcadores[i].setIcon(blueIcon);
                 break;
             }
@@ -168,8 +178,8 @@ $(function () {
 
 //Escondemos el contenido de la informacion
 $(".contenido").hide();
-//slide toggle para el ejercicio
 $(document).ready(function () {
+    //SlideToggle y slideUp para la informacion
     $("#container-datos1").click(function () {
         $("#contenido1").slideToggle(1000);
 
@@ -198,13 +208,12 @@ $(document).ready(function () {
         $("#contenido3").slideUp(1000);
         $("#contenido1").slideUp(1000);
     });
-});
 
-//Funciona para minimizar el mapa
-$(document).ready(function () {
+    //Para minimizar el mapa
     $("#mini-map").click(function () {
         $("#map").slideToggle(1000);
         $("#info-selec-marc").slideToggle(1000);
     });
 });
+
 
