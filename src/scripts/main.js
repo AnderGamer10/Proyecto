@@ -8,8 +8,23 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Mi portfolio &copy; <a href="http://185.60.40.210/2daw3/anderr/">Portafolio</a>',
     maxZoom: 18
 }).addTo(mapa);
-//Parseo de datos json
-var aDatos = JSON.parse(sDatos);
+
+/* ---------------------------------------------------------------------Haciendo--------------------------------------------------------------------- */
+function obteniendoDatos() {
+    fetch("https://localhost:5001/api/InformacionTiempoes")
+        .then(response => response.json())
+        .then(datosTiempo => {
+            console.log(datosTiempo);
+            crearMarcadores(datosTiempo);
+            almacenadosLocalStorage(datosTiempo);
+        })
+};
+obteniendoDatos();
+/* ----------------------------------------------------------------- Fin de Haciendo ------------------------------------------------------------------ */
+
+
+//Parseo de datos json var aDatos = JSON.parse(sDatos);
+
 
 //Marcadores seleccionados
 aSeleccionados = [];
@@ -35,32 +50,32 @@ var blueIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-crearMarcadores();
-almacenadosLocalStorage();
+
 
 //Funcion para crear los nodos 
-function crearMarcadores() {
+function crearMarcadores(aDatos) {
+    console.log(aDatos[5].nombre)
     for (let i = 0; i < aDatos.length; i++) {
-        let marker = L.marker([aDatos[i].GpxY, aDatos[i].GpxX], { myId: aDatos[i].Id }).bindPopup(`${aDatos[i].Nombre}`).addTo(mapa);
-        marker.on("click", añadirSeleccionado);
+        let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id}).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
+        marker.on("click", añadirSeleccionado(aDatos[i].nombre,aDatos));
         aMarcadores.push(marker);
     }
 };
 
 //Funcion para saber que marcador a clicado
-function añadirSeleccionado(e) {
-    let sValorNombre = e.target.getPopup().getContent();
+function añadirSeleccionado(nombre,aDatos) {
     for (let i = 0; i < aDatos.length; i++) {
-        if (sValorNombre == aDatos[i].Nombre) {
-            let sId = aDatos[i].Id;
+        if(aDatos[i].nombre == nombre){
+            let sId = aDatos[i].id;
             //Se añadira a un array para saber si esta seleccionado 
             if (aSeleccionados.indexOf(sId) == -1 && aSeleccionados.length < 4) {
-                e.target.setIcon(redIcon);
+                
+                /* ahora va mal el seticon --------------------------------------------------------------------*/ 
+                aMarcadores[i].setIcon(redIcon);
                 aSeleccionados.push(sId);
-                //localStorage.setItem(`${aDatos[i].Nombre}`, aDatos[i].Id)
-                localStorage.IDs=JSON.stringify(aSeleccionados);
-                crearSeleccionado(aDatos[i].Id);
-                borrarSeleccionada();
+                localStorage.IDs = JSON.stringify(aSeleccionados);
+                crearSeleccionado(aDatos[i].id, aDatos);
+                borrarSeleccionada(aDatos);
                 activarDroppable();
             }
             break;
@@ -69,14 +84,14 @@ function añadirSeleccionado(e) {
 }
 
 //Se añade al html el seleccionado
-function crearSeleccionado(sId) {
+function crearSeleccionado(sId, aDatos) {
     for (let i = 0; i < aDatos.length; i++) {
-        if (aDatos[i].Id == sId) {
+        if (aDatos[i].id == sId) {
             let sCrearDiv =
                 `
             <div id="${sId}" class="opcionElegida">
                 <div id="elegida-info" class="d-flex flex-row">
-                    <h3>${aDatos[i].Nombre}</h3>
+                    <h3>${aDatos[i].nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
                 <div class="informacion-cuadrado mostrar-info" id="divTemperature">
@@ -104,25 +119,25 @@ function crearSeleccionado(sId) {
 }
 
 //Obtenemos datos de los almacenados
-function almacenadosLocalStorage() {
+function almacenadosLocalStorage(aDatos) {
     if (localStorage.length != null) {
-            aAñadirArray=JSON.parse(localStorage.IDs);
-            for(let i = 0; i < aAñadirArray.length; i++){
-                for (let j = 0; j < aDatos.length; j++) {
-                    if (aMarcadores[j].options.myId == aAñadirArray[i]) {
-                        aMarcadores[j].setIcon(redIcon)
-                    }
+        aAñadirArray = JSON.parse(localStorage.IDs);
+        for (let i = 0; i < aAñadirArray.length; i++) {
+            for (let j = 0; j < aDatos.length; j++) {
+                if (aMarcadores[j].options.myId == aAñadirArray[i]) {
+                    aMarcadores[j].setIcon(redIcon)
                 }
-                aSeleccionados.push(aAñadirArray[i]);
-                crearSeleccionado(aAñadirArray[i]);
             }
-            borrarSeleccionada();
-            activarDroppable();
+            aSeleccionados.push(aAñadirArray[i]);
+            crearSeleccionado(aAñadirArray[i], aDatos);
+        }
+        borrarSeleccionada(aDatos);
+        activarDroppable();
     }
 }
 
 //Borramos el seleccionado
-function borrarSeleccionada() {
+function borrarSeleccionada(aDatos) {
     $(".btn-close").on("click", function () {
         //Obtenemos el id y posicion del id en seleccionados
         console.log("1");
@@ -132,8 +147,8 @@ function borrarSeleccionada() {
             aSeleccionados.splice(sIdx, 1);
         //Borramos del local storage
         for (let i = 0; i < aDatos.length; i++) {
-            if (aDatos[i].Id == sId) {
-                localStorage.IDs=JSON.stringify(aSeleccionados);
+            if (aDatos[i].id == sId) {
+                localStorage.IDs = JSON.stringify(aSeleccionados);
                 aMarcadores[i].setIcon(blueIcon);
                 break;
             }
