@@ -55,9 +55,10 @@ function añadirSeleccionado(e) {
             let sId = aDatos[i].Id;
             //Se añadira a un array para saber si esta seleccionado 
             if (aSeleccionados.indexOf(sId) == -1 && aSeleccionados.length < 4) {
-                localStorage.setItem(`${aDatos[i].Nombre}`, aDatos[i].Id)
                 e.target.setIcon(redIcon);
                 aSeleccionados.push(sId);
+                //localStorage.setItem(`${aDatos[i].Nombre}`, aDatos[i].Id)
+                localStorage.IDs=JSON.stringify(aSeleccionados);
                 crearSeleccionado(aDatos[i].Id);
                 borrarSeleccionada();
                 activarDroppable();
@@ -105,20 +106,18 @@ function crearSeleccionado(sId) {
 //Obtenemos datos de los almacenados
 function almacenadosLocalStorage() {
     if (localStorage.length != null) {
-        var aValor = [],
-            keys = Object.keys(localStorage);
-        for (let i = 0; i < localStorage.length; i++) {
-            let sValorId = localStorage.getItem(keys[i]);
-            aSeleccionados.push(sValorId);
-            for (let i = 0; i < aDatos.length; i++) {
-                if (aMarcadores[i].options.myId == sValorId) {
-                    aMarcadores[i].setIcon(redIcon)
+            aAñadirArray=JSON.parse(localStorage.IDs);
+            for(let i = 0; i < aAñadirArray.length; i++){
+                for (let j = 0; j < aDatos.length; j++) {
+                    if (aMarcadores[j].options.myId == aAñadirArray[i]) {
+                        aMarcadores[j].setIcon(redIcon)
+                    }
                 }
+                aSeleccionados.push(aAñadirArray[i]);
+                crearSeleccionado(aAñadirArray[i]);
             }
-            crearSeleccionado(sValorId);
             borrarSeleccionada();
             activarDroppable();
-        }
     }
 }
 
@@ -134,7 +133,7 @@ function borrarSeleccionada() {
         //Borramos del local storage
         for (let i = 0; i < aDatos.length; i++) {
             if (aDatos[i].Id == sId) {
-                localStorage.removeItem(`${aDatos[i].Nombre}`);
+                localStorage.IDs=JSON.stringify(aSeleccionados);
                 aMarcadores[i].setIcon(blueIcon);
                 break;
             }
@@ -200,3 +199,12 @@ $(document).ready(function () {
         $("#contenido1").slideUp(1000);
     });
 });
+
+//Funciona para minimizar el mapa
+$(document).ready(function () {
+    $("#mini-map").click(function () {
+        $("#map").slideToggle(1000);
+        $("#info-selec-marc").slideToggle(1000);
+    });
+});
+
