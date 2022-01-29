@@ -1,3 +1,4 @@
+import { map } from 'jquery';
 import L from 'leaflet';
 
 //mapa
@@ -33,7 +34,6 @@ var blueIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-/* ---------------------------------------------------------------------Haciendo--------------------------------------------------------------------- */
 function obteniendoDatos() {
     fetch("https://localhost:5001/api/InformacionTiempoes")
         .then(response => response.json())
@@ -43,11 +43,9 @@ function obteniendoDatos() {
 
             //Funcion para crear los marcadores 
             function crearMarcadores() {
-                console.log(aDatos[5].nombre)
                 for (let i = 0; i < aDatos.length; i++) {
                     let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
                     marker.on("click", añadirSeleccionado);
-                    //marker.click = function() {return añadirSeleccionado(aDatos[i].id,aDatos)};
                     aMarcadores.push(marker);
                 }
             };
@@ -60,7 +58,6 @@ function obteniendoDatos() {
                         let sId = aDatos[i].id;
                         //Se añadira a un array para saber si esta seleccionado 
                         if (aSeleccionados.indexOf(sId) == -1 && aSeleccionados.length < 4) {
-                            /* ahora va mal el seticon --------------------------------------------------------------------*/
                             aMarcadores[i].setIcon(redIcon);
                             aSeleccionados.push(sId);
                             localStorage.IDs = JSON.stringify(aSeleccionados);
@@ -73,10 +70,40 @@ function obteniendoDatos() {
                 }
             }
             almacenadosLocalStorage(aDatos);
+            let select = `<select id="selOpcion" name="select">
+            <option value="none">Todos</option>
+            <option value="BUOY">BUOY</option>
+            <option value="METEOROLOGICAL">METEOROLOGICAL</option>
+            <option value="GAUGING">GAUGING</option>
+            <option value="QUALITY">QUALITY</option>
+            `;
+            $("#filtro").append(select);
+
+            $("select").on("change", function () {
+                let cambio = document.getElementById("selOpcion").value;
+                
+                aMarcadores.forEach(i => {
+                    mapa.removeLayer(i);
+                });
+                aMarcadores = [];
+                if(cambio == "none"){
+                    crearMarcadores();
+                }else{
+                    for (let i = 0; i < aDatos.length; i++) {
+                        if(aDatos[i].tipoEstacion == cambio){
+                            let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
+                            marker.on("click", añadirSeleccionado);
+                            aMarcadores.push(marker);
+                        }else{
+                            let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`);
+                            aMarcadores.push(marker);
+                        }
+                    }
+                }
+            });
         })
 };
 obteniendoDatos();
-/* ----------------------------------------------------------------- Fin de Haciendo ------------------------------------------------------------------ */
 
 //Se añade al html el seleccionado
 function crearSeleccionado(sId, aDatos) {
@@ -84,7 +111,7 @@ function crearSeleccionado(sId, aDatos) {
         if (aDatos[i].id == sId) {
             let sCrearDiv =
                 `
-            <div id="${sId}" class="opcionElegida">
+            <div id="${sId}" class="opcionElegida col-lg-3">
                 <div id="elegida-info" class="d-flex flex-row">
                     <h3>${aDatos[i].nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
@@ -93,9 +120,9 @@ function crearSeleccionado(sId, aDatos) {
                     <p>Temperatura:</p>
                     <b><p>${aDatos[i].temperatura} &deg;C</p></b>
                 </div>
-                <div class="informacion-cuadrado" id="divHumidity">
+                <div class="informacion-cuadrado mostrar-info" id="divHumidity">
                     <p>Humedad:</p>
-                    <b><p>${aDatos[i].humedad} %</p></b>
+                    <b><p>${aDatos[i].humedad}%</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divWind">
                     <p>Viento:</p>
@@ -177,32 +204,36 @@ $(function () {
 });
 
 //Escondemos el contenido de la informacion
-$(".contenido").hide();
+//$(".contenido").hide();
 $(document).ready(function () {
     //SlideToggle y slideUp para la informacion
-    $("#container-datos1").click(function () {
+    $("#container-datos1").on("click", function () {
         $("#contenido1").slideToggle(1000);
+        cambioTamanoInformacion();
 
         $("#contenido2").slideUp(1000);
         $("#contenido3").slideUp(1000);
         $("#contenido4").slideUp(1000);
     });
-    $("#container-datos2").click(function () {
+    $("#container-datos2").on("click", function () {
         $("#contenido2").slideToggle(1000);
+        cambioTamanoInformacion();
 
         $("#contenido1").slideUp(1000);
         $("#contenido3").slideUp(1000);
         $("#contenido4").slideUp(1000);
     });
-    $("#container-datos3").click(function () {
+    $("#container-datos3").on("click", function () {
         $("#contenido3").slideToggle(1000);
+        cambioTamanoInformacion();
 
         $("#contenido2").slideUp(1000);
         $("#contenido1").slideUp(1000);
         $("#contenido4").slideUp(1000);
     });
-    $("#container-datos4").click(function () {
+    $("#container-datos4").on("click", function () {
         $("#contenido4").slideToggle(1000);
+        cambioTamanoInformacion();
 
         $("#contenido2").slideUp(1000);
         $("#contenido3").slideUp(1000);
@@ -210,10 +241,15 @@ $(document).ready(function () {
     });
 
     //Para minimizar el mapa
-    $("#mini-map").click(function () {
-        $("#map").slideToggle(1000);
-        $("#info-selec-marc").slideToggle(1000);
+    $("#mini-map").on("click", function () {
+        $("#map-info").slideToggle(1000);
     });
 });
 
-
+//Sirve para aumentar el tamaño del div de informacion para que no se quede fuera
+function cambioTamanoInformacion(){
+    if ($("#informacion").height() != 300)
+            $("#informacion").animate({ height: 300 }, 1000);
+        else
+            $("#informacion").animate({ height: 520 }, 1000);
+}
