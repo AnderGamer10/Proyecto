@@ -76,6 +76,7 @@ function obteniendoDatos() {
             <option value="METEOROLOGICAL">METEOROLOGICAL</option>
             <option value="GAUGING">GAUGING</option>
             <option value="QUALITY">QUALITY</option>
+            </select>
             `;
             $("#filtro").append(select);
 
