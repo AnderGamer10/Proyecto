@@ -39,17 +39,22 @@ function obteniendoDatos() {
         .then(response => response.json())
         .then(aDatos => {
             console.log(aDatos);
-            crearMarcadores();
 
             //Funcion para crear los marcadores 
             function crearMarcadores() {
                 for (let i = 0; i < aDatos.length; i++) {
                     let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
                     marker.on("click", añadirSeleccionado);
+                    marker.on("mouseover", function (e) {
+                        this.openPopup();
+                      });
+                    
+                      marker.on("mouseout", function (e) {
+                        this.closePopup();
+                      });
                     aMarcadores.push(marker);
                 }
             };
-
             //Funcion para saber que marcador a clicado
             function añadirSeleccionado(e) {
                 var sObtenerNombre = e.target.getPopup().getContent();
@@ -69,42 +74,94 @@ function obteniendoDatos() {
                     }
                 }
             }
-            almacenadosLocalStorage(aDatos);
-            let select = `<select id="selOpcion" name="select">
-            <option value="none">Todos</option>
-            <option value="BUOY">BUOY</option>
-            <option value="METEOROLOGICAL">METEOROLOGICAL</option>
-            <option value="GAUGING">GAUGING</option>
-            <option value="QUALITY">QUALITY</option>
-            </select>
-            `;
-            $("#filtro").append(select);
 
-            $("select").on("change", function () {
-                let cambio = document.getElementById("selOpcion").value;
+            //Funcion para crear los filtros
+            function selectsFiltro(){
+
+                let selecccionEstacion = `<select id="selEstacion" name="Estaciones">
+                <option value="none">Todos</option>
+                <option value="BUOY">BUOY</option>
+                <option value="METEOROLOGICAL">METEOROLOGICAL</option>
+                <option value="GAUGING">GAUGING</option>
+                <option value="QUALITY">QUALITY</option>
+                </select>
+                `;
+                let selecccionProvincia = `<select id="selProvincia" name="Provincias">
+                <option value="none">Todos</option>
+                <option value="Bizkaia">Bizkaia</option>
+                <option value="Gipuzkoa">Gipuzkoa</option>
+                <option value="Álava">Álava</option>
+                <option value="Burgos">Burgos</option>
+                <option value="Navarra">Navarra</option>
+                </select>
+                `;
+                $("#filtro").append(selecccionEstacion);
+                $("#filtro").append(selecccionProvincia);
                 
-                aMarcadores.forEach(i => {
-                    mapa.removeLayer(i);
-                });
-                aMarcadores = [];
-                if(cambio == "none"){
-                    crearMarcadores();
-                }else{
-                    for (let i = 0; i < aDatos.length; i++) {
-                        if(aDatos[i].tipoEstacion == cambio){
-                            let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
-                            marker.on("click", añadirSeleccionado);
-                            aMarcadores.push(marker);
-                        }else{
-                            let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`);
-                            aMarcadores.push(marker);
+
+
+
+                
+                $("select").on("change", function () {
+                    let cambioEstaciones = document.getElementById("selEstacion").value;
+                    let cambioProvincias = document.getElementById("selProvincia").value;
+                    
+                    //Eliminamos del mapa los markers para añadirlo de nuevo segun el filtro
+                    aMarcadores.forEach(i => {
+                        mapa.removeLayer(i);
+                    });
+                    aMarcadores = [];
+
+                    //If else para saber la seleccion de filtro
+                    if(cambioEstaciones == "none" && cambioProvincias == "none"){
+                        crearMarcadores();
+                    }else if(cambioEstaciones == "none" && cambioProvincias != "none"){
+                        for (let i = 0; i < aDatos.length; i++) {
+                            if(aDatos[i].provincia == cambioProvincias){
+                                añadirMakerAMapa(i);
+                            }else{
+                                añadirMarkerArray(i);
+                            }
+                        }
+                    }else if(cambioEstaciones != "none" && cambioProvincias == "none"){
+                        for (let i = 0; i < aDatos.length; i++) {
+                            if(aDatos[i].tipoEstacion == cambioEstaciones){
+                                añadirMakerAMapa(i);
+                            }else{
+                                añadirMarkerArray(i);
+                            }
+                        }
+                    }else{
+                        for (let i = 0; i < aDatos.length; i++) {
+                            if(aDatos[i].provincia == cambioProvincias && aDatos[i].tipoEstacion == cambioEstaciones){
+                                añadirMakerAMapa(i);
+                            }else{
+                                añadirMarkerArray(i);
+                            }
                         }
                     }
-                }
-            });
+                    colorearSeleccionados();
+            
+                });
+            }
+
+            //2 Funciones para añadir al array de marcadores los markers y añadir al mapa los elegidos
+            function añadirMakerAMapa(i){
+                let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
+                marker.on("click", añadirSeleccionado);
+                aMarcadores.push(marker);
+            }
+            function añadirMarkerArray(i){
+                let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`);
+                aMarcadores.push(marker);
+            }
+
+            //Llamada de functions
+            crearMarcadores();
+            almacenadosLocalStorage(aDatos);
+            selectsFiltro();
         })
 };
-obteniendoDatos();
 
 //Se añade al html el seleccionado
 function crearSeleccionado(sId, aDatos) {
@@ -112,7 +169,7 @@ function crearSeleccionado(sId, aDatos) {
         if (aDatos[i].id == sId) {
             let sCrearDiv =
                 `
-            <div id="${sId}" class="opcionElegida col-lg-3">
+            <div id="${sId}" class="opcionElegida ">
                 <div id="elegida-info" class="d-flex flex-row">
                     <h3>${aDatos[i].nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
@@ -148,7 +205,7 @@ function almacenadosLocalStorage(aDatos) {
         for (let i = 0; i < aAñadirArray.length; i++) {
             for (let j = 0; j < aDatos.length; j++) {
                 if (aMarcadores[j].options.myId == aAñadirArray[i]) {
-                    aMarcadores[j].setIcon(redIcon)
+                    aMarcadores[j].setIcon(redIcon);
                 }
             }
             aSeleccionados.push(aAñadirArray[i]);
@@ -193,6 +250,16 @@ function activarDroppable() {
             $(this).find(`#div${sId}`).addClass("mostrar-info");
         }
     });
+}
+
+function colorearSeleccionados(){
+    for(let i = 0; i < aMarcadores.length;i++){
+        for(let j = 0; j < aSeleccionados.length;j++){
+            if(aSeleccionados[j] == aMarcadores[i].options.myId){
+                aMarcadores[i].setIcon(redIcon);
+            } 
+        }
+    }
 }
 
 //Activamos el draggable en las imagenes de las opciones
@@ -254,3 +321,5 @@ function cambioTamanoInformacion(){
         else
             $("#informacion").animate({ height: 520 }, 1000);
 }
+
+obteniendoDatos();
