@@ -1,8 +1,8 @@
 *
     font-family: 'Quicksand', sans-serif
-    // margin: 0
-    // padding: 0
-    // box-sizing: border-box
+    margin: 0
+    padding: 0
+    box-sizing: border-box
 html
     height: 100vh 
     width: 100vw
@@ -15,6 +15,7 @@ nav
     height: 8%
     .navbar-brand
             font-size: 30px
+
 #informacion
     width: 12%
     height: 300px
@@ -52,6 +53,9 @@ nav
                 h4:hover
                     color: #272727
                     font-weight: bolder
+                img
+                    width: 30px
+                    height: 30px
 #container
     height: 82%
     width: 70%
@@ -73,7 +77,6 @@ nav
                 margin: auto
                 margin-left: -30%
                 height: 50%
-                width: 100px
                 background: none
                 color: white
                 option
@@ -110,17 +113,23 @@ nav
             margin: auto
             #centrar
                 margin: auto
+                border: 3px solid
+                border-radius: 5px
                 img 
                     width: 55px
                     height: 55px
                     margin: 5px
+        .row
+            --bs-gutter-x: 0rem
         #seleccionados
             width: 80%
             height: 100%
             .opcionElegida
                 border: 1px solid
                 height: 80%
+                max-width: 24%
                 margin: auto
+                border-radius: 15px
                 .informacion-cuadrado
                     display: flex
                     flex-direction: row
@@ -169,7 +178,7 @@ footer
             #info-selec-marc
                 width: 60%
         #opciones-seleccionados
-            width: 45%
+            width: 100%
             margin: auto
             flex-direction: column !important
             #imagenes
@@ -178,9 +187,20 @@ footer
                     display: flex
                     flex-direction: row 
                     margin: auto
-        #seleccionados
-            margin: auto
+            #seleccionados
+                margin: auto
+                margin-bottom: 20px
+                margin-top: 20px
+                width: 80%
+                .opcionElegida
+                    max-width: 49%            
+    nav
+        height: auto
+
 @media ( max-width: 700px )
     #container
         #opciones-seleccionados
             width: 65%
+            #seleccionados
+                .opcionElegida
+                    max-width: 100%
