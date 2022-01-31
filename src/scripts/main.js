@@ -266,10 +266,10 @@ function colorearSeleccionados() {
 
 //Activamos el draggable en las imagenes de las opciones
 $(function () {
-    $("#imgTemperature").draggable({ revert: true });
-    $("#imgHumidity").draggable({ revert: true });
-    $("#imgWind").draggable({ revert: true });
-    $("#imgRaining").draggable({ revert: true });
+    $("#imgTemperature").draggable({ helper: "clone" });
+    $("#imgHumidity").draggable({ helper: "clone" });
+    $("#imgWind").draggable({ helper: "clone" });
+    $("#imgRaining").draggable({ helper: "clone" });
 });
 
 //Escondemos el contenido de la informacion
