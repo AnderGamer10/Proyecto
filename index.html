@@ -1,146 +1,59 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Interactivo</title>
+    <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css"
-        integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="src/styles/main.sass">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="src/styles/index.sass">
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
-        <div class="container-fluid">
-            <a class="navbar-brand " href="#">Mapa interactivo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navegacion"
-                aria-controls="navbarsExample04" aria-expanded="false">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navegacion">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Iniciar Sesion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Registrarse</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div id="informacion">
-        <div id="container-info">
-            <h3>Informacion</h3>
-            <div class="container-informacion" id="container-datos1">
-                <div class="nombre-dato btn">
-                    <h4>Temperatura</h4><i class="bi bi-caret-down-fill"></i><img src="src/images/thermometer.png" alt="">
-                </div>
-                <div class="datos" id="contenido1">
-                    <p>La temperatura es una magnitud escalar que sistematiza la noción vulgar de frío y caliente
-                        haciéndola medible mediante un termómetro</p>
-                </div>
-            </div>
-            <hr>
-            <div class="container-informacion" id="container-datos2">
-                <div class="nombre-dato btn">
-                    <h4>Humedad</h4><i class="bi bi-caret-down-fill"></i><img src="src/images/humedad.png" alt="">
-                </div>
-                <div class="datos" id="contenido2">
-                    <p>Se denomina ''humedad o vapor de agua'' al agua que impregna un cuerpo o al vapor presente en
-                        la atmósfera el cual, por condensación llega a formar las nubes</p>
-                </div>
-            </div>
-            <hr>
-            <div class="container-informacion" id="container-datos3">
-                <div class="nombre-dato btn">
-                    <h4>Viento</h4><i class="bi bi-caret-down-fill"></i><img src="src/images/wind.png" alt="">
-                </div>
-                <div class="datos" id="contenido3">
-                    <p>El viento es el flujo del aire a gran escala en la atmósfera terrestre. En la atmósfera, el
-                        viento es el movimiento en masa del aire de acuerdo con las diferencias de presión
-                        atmosférica. </p>
-                </div>
-            </div>
-            <hr>
-            <div class="container-informacion" id="container-datos4">
-                <div class="nombre-dato btn">
-                    <h4>Precipitacion</h4><i class="bi bi-caret-down-fill"></i><img src="src/images/raining.png" alt="">
-                </div>
-                <div class="datos" id="contenido4">
-                    <p>En meteorología, la precipitación es cualquier forma de hidrometeoro que cae de la atmósfera
-                        y llega a la superficie terrestre. Este fenómeno incluye lluvia, llovizna, nieve, aguanieve y
-                        granizo</p>
-                </div>
-            </div>
-            <hr>
-        </div>
-    </div>
-
-    <div id="container" class="bg-light">
-        <div id="filtro-mini" class="d-flex flex-row">
-            <div id="filtro" class="bg-dark text-light d-flex flex-row">
-                <h2>Filtro</h2>
-            </div>
-            <div id="mini-map">
-                <i class="bi bi-aspect-ratio fa-2x btn"></i>
-            </div>
-        </div>
-        <div id="map-info">
-            <div id="map"></div>
-            <div id="info-selec-marc">
-                <p>🔴Seleccionado</p>
-                <p>🔵No seleccionado</p>
-            </div>
-        </div>
-
-        <div id="opciones-seleccionados" class="d-flex flex-row">
-            <div id="imagenes" class="d-flex flex-column">
-                <div id="centrar">
-                    <div class="img-sep d-flex flex-row">
-                        <img id="imgTemperature" src="src/images/thermometer.png" alt="">
-                        <img id="imgHumidity" src="src/images/humedad.png" alt="">
+    <section class="vh-100 gradient-custom">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+              <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+                  <div class="mb-md-5 mt-md-4 pb-5">
+                    <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                    <p class="text-white-50 mb-5">Por favor introduzca sus datos</p>
+      
+                    <div class="form-outline form-white mb-4">
+                      <input type="email" id="typeEmailX" class="form-control form-control-lg" />
+                      <label class="form-label" for="typeEmailX">Email</label>
                     </div>
-                    <div class="img-sep d-flex flex-row">
-                        <img id="imgWind" src="src/images/wind.png" alt="">
-                        <img id="imgRaining" src="src/images/raining.png" alt="">
+      
+                    <div class="form-outline form-white mb-4">
+                      <input type="password" id="typePasswordX" class="form-control form-control-lg" />
+                      <label class="form-label" for="typePasswordX">Contraseña</label>
                     </div>
+      
+                    <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">¿Has olvidado la contraseña?</a></p>
+      
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit" h>Login</button>
+      
+                    <div class="d-flex justify-content-center text-center mt-4 pt-1">
+                      <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                      <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
+                      <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
+                    </div>
+      
+                  </div>
+      
+                  <!-- Prueba de entrada al main ------------------------------------------------------------------------------ -->
+                  <div>
+                    <p class="mb-0">¿Todavia no tienes cuenta? <a href="main.html" class="text-white-50 fw-bold">Sign Up</a></p>
+                  </div>
+      
                 </div>
+              </div>
             </div>
-            <div id="seleccionados" class="row"></div>
+          </div>
         </div>
-    </div>
-
-    <footer class="d-flex flex-wrap justify-content-between align-items-center bg-dark ">
-        <div id="copy" class="col-md-4 flex-column align-items-center">
-            <span class="text-light">&copy; 2022 Plaiaundi, Proyect</span>
-            <div>
-                <span class="text-light">Ander Redondo</span>
-                <a href="http://185.60.40.210/2daw3/anderr/" target="_blank"> Portafolio</a>
-            </div>
-        </div>
-        <div id="links" class="nav col-md-4 justify-content-end list-unstyled d-flex">
-            <a href="https://github.com/AnderGamer10" aria-label="Github" rel="noopener"><i class="bi bi-github text-light"></i></a>
-        </div>
-    </footer>
-
-    <script src="src/scripts/main.js" type="module"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js"
-        integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      </section>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 </body>
