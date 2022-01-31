@@ -6,7 +6,7 @@ const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898], 11);
 
 //"Comentarios" de la parte inferior derecha del mapa
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Mi portfolio &copy; <a href="http://185.60.40.210/2daw3/anderr/">Portafolio</a>',
+    attribution: '<a href="http://185.60.40.210/2daw3/anderr/">Mi portfolio</a> &copy; ',
     maxZoom: 18
 }).addTo(mapa);
 
@@ -40,21 +40,18 @@ function obteniendoDatos() {
         .then(aDatos => {
             console.log(aDatos);
 
-            //Funcion para crear los marcadores 
+            //Funcion para crear los marcadores y el localStorage
             function crearMarcadores() {
+                if (localStorage.IDs == null)
+                    localStorage.IDs = JSON.stringify(aSeleccionados);
                 for (let i = 0; i < aDatos.length; i++) {
-                    let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
-                    marker.on("click", añadirSeleccionado);
-                    marker.on("mouseover", function (e) {
-                        this.openPopup();
-                      });
-                    
-                      marker.on("mouseout", function (e) {
-                        this.closePopup();
-                      });
-                    aMarcadores.push(marker);
+                    let sMarker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
+                    sMarker.on("click", añadirSeleccionado);
+                    popUpOverOut(sMarker);
+                    aMarcadores.push(sMarker);
                 }
             };
+
             //Funcion para saber que marcador a clicado
             function añadirSeleccionado(e) {
                 var sObtenerNombre = e.target.getPopup().getContent();
@@ -76,18 +73,17 @@ function obteniendoDatos() {
             }
 
             //Funcion para crear los filtros
-            function selectsFiltro(){
-
+            function selectsFiltro() {
                 let selecccionEstacion = `<select id="selEstacion" name="Estaciones">
-                <option value="none">Todos</option>
-                <option value="BUOY">BUOY</option>
-                <option value="METEOROLOGICAL">METEOROLOGICAL</option>
-                <option value="GAUGING">GAUGING</option>
-                <option value="QUALITY">QUALITY</option>
+                <option value="none">Estaciones</option>
+                <option value="BUOY">Plataformas</option>
+                <option value="METEOROLOGICAL">Meteorologico</option>
+                <option value="GAUGING">De aforo</option>
+                <option value="QUALITY">De calidad</option>
                 </select>
                 `;
                 let selecccionProvincia = `<select id="selProvincia" name="Provincias">
-                <option value="none">Todos</option>
+                <option value="none">Provincias</option>
                 <option value="Bizkaia">Bizkaia</option>
                 <option value="Gipuzkoa">Gipuzkoa</option>
                 <option value="Álava">Álava</option>
@@ -97,15 +93,11 @@ function obteniendoDatos() {
                 `;
                 $("#filtro").append(selecccionEstacion);
                 $("#filtro").append(selecccionProvincia);
-                
 
-
-
-                
                 $("select").on("change", function () {
                     let cambioEstaciones = document.getElementById("selEstacion").value;
                     let cambioProvincias = document.getElementById("selProvincia").value;
-                    
+
                     //Eliminamos del mapa los markers para añadirlo de nuevo segun el filtro
                     aMarcadores.forEach(i => {
                         mapa.removeLayer(i);
@@ -113,47 +105,59 @@ function obteniendoDatos() {
                     aMarcadores = [];
 
                     //If else para saber la seleccion de filtro
-                    if(cambioEstaciones == "none" && cambioProvincias == "none"){
+                    if (cambioEstaciones == "none" && cambioProvincias == "none") {
                         crearMarcadores();
-                    }else if(cambioEstaciones == "none" && cambioProvincias != "none"){
+                    } else if (cambioEstaciones == "none" && cambioProvincias != "none") {
                         for (let i = 0; i < aDatos.length; i++) {
-                            if(aDatos[i].provincia == cambioProvincias){
+                            if (aDatos[i].provincia == cambioProvincias) {
                                 añadirMakerAMapa(i);
-                            }else{
+                            } else {
                                 añadirMarkerArray(i);
                             }
                         }
-                    }else if(cambioEstaciones != "none" && cambioProvincias == "none"){
+                    } else if (cambioEstaciones != "none" && cambioProvincias == "none") {
                         for (let i = 0; i < aDatos.length; i++) {
-                            if(aDatos[i].tipoEstacion == cambioEstaciones){
+                            if (aDatos[i].tipoEstacion == cambioEstaciones) {
                                 añadirMakerAMapa(i);
-                            }else{
+                            } else {
                                 añadirMarkerArray(i);
                             }
                         }
-                    }else{
+                    } else {
                         for (let i = 0; i < aDatos.length; i++) {
-                            if(aDatos[i].provincia == cambioProvincias && aDatos[i].tipoEstacion == cambioEstaciones){
+                            if (aDatos[i].provincia == cambioProvincias && aDatos[i].tipoEstacion == cambioEstaciones) {
                                 añadirMakerAMapa(i);
-                            }else{
+                            } else {
                                 añadirMarkerArray(i);
                             }
                         }
                     }
                     colorearSeleccionados();
-            
+
                 });
             }
 
-            //2 Funciones para añadir al array de marcadores los markers y añadir al mapa los elegidos
-            function añadirMakerAMapa(i){
-                let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
-                marker.on("click", añadirSeleccionado);
-                aMarcadores.push(marker);
+            //Dos Funciones para añadir al array de marcadores los markers y añadir al mapa los elegidos
+            function añadirMakerAMapa(i) {
+                let sMarker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`).addTo(mapa);
+                sMarker.on("click", añadirSeleccionado);
+                popUpOverOut(sMarker);
+                aMarcadores.push(sMarker);
             }
-            function añadirMarkerArray(i){
-                let marker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`);
-                aMarcadores.push(marker);
+            function añadirMarkerArray(i) {
+                let sMarker = L.marker([aDatos[i].gpxY, aDatos[i].gpxX], { myId: aDatos[i].id }).bindPopup(`${aDatos[i].nombre}`);
+                popUpOverOut(sMarker);
+                aMarcadores.push(sMarker);
+            }
+            //Funcion para mostrar el popup y dejarlo de mostrar al estar encima de un marcador
+            function popUpOverOut(sMarker) {
+                sMarker.on("mouseover", function (e) {
+                    this.openPopup();
+                });
+
+                sMarker.on("mouseout", function (e) {
+                    this.closePopup();
+                });
             }
 
             //Llamada de functions
@@ -194,7 +198,6 @@ function crearSeleccionado(sId, aDatos) {
             `;
             document.getElementById("seleccionados").innerHTML += sCrearDiv;
         }
-
     }
 }
 
@@ -220,7 +223,6 @@ function almacenadosLocalStorage(aDatos) {
 function borrarSeleccionada(aDatos) {
     $(".btn-close").on("click", function () {
         //Obtenemos el id y posicion del id en seleccionados
-        console.log("1");
         let sId = this.closest(".opcionElegida").id;
         let sIdx = aSeleccionados.indexOf(sId);
         if (sIdx != -1)
@@ -239,7 +241,6 @@ function borrarSeleccionada(aDatos) {
 
 //Activamos el droppable
 function activarDroppable() {
-    //Activamos el droppable de las opciones elegidas
     $(".opcionElegida").droppable({
         classes: {
             "ui-droppable-active": "ui-state-highlight",
@@ -252,27 +253,26 @@ function activarDroppable() {
     });
 }
 
-function colorearSeleccionados(){
-    for(let i = 0; i < aMarcadores.length;i++){
-        for(let j = 0; j < aSeleccionados.length;j++){
-            if(aSeleccionados[j] == aMarcadores[i].options.myId){
+//Funcion para colorear los marcadores seleccionados al filtrar
+function colorearSeleccionados() {
+    for (let i = 0; i < aMarcadores.length; i++) {
+        for (let j = 0; j < aSeleccionados.length; j++) {
+            if (aSeleccionados[j] == aMarcadores[i].options.myId) {
                 aMarcadores[i].setIcon(redIcon);
-            } 
+            }
         }
     }
 }
 
 //Activamos el draggable en las imagenes de las opciones
 $(function () {
-    //$("#seleccionados").sortable();
-    $("#imgTemperature").draggable({ revert: true });
-    $("#imgHumidity").draggable({ revert: true });
-    $("#imgWind").draggable({ revert: true });
-    $("#imgRaining").draggable({ revert: true });
+    $("#imgTemperature").draggable({ helper: "clone" });
+    $("#imgHumidity").draggable({ helper: "clone" });
+    $("#imgWind").draggable({ helper: "clone" });
+    $("#imgRaining").draggable({ helper: "clone" });
 });
 
 //Escondemos el contenido de la informacion
-//$(".contenido").hide();
 $(document).ready(function () {
     //SlideToggle y slideUp para la informacion
     $("#container-datos1").on("click", function () {
@@ -315,11 +315,11 @@ $(document).ready(function () {
 });
 
 //Sirve para aumentar el tamaño del div de informacion para que no se quede fuera
-function cambioTamanoInformacion(){
+function cambioTamanoInformacion() {
     if ($("#informacion").height() != 300)
-            $("#informacion").animate({ height: 300 }, 1000);
-        else
-            $("#informacion").animate({ height: 520 }, 1000);
+        $("#informacion").animate({ height: 300 }, 1000);
+    else
+        $("#informacion").animate({ height: 520 }, 1000);
 }
 
 obteniendoDatos();
