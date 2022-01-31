@@ -149,6 +149,7 @@ function obteniendoDatos() {
                 popUpOverOut(sMarker);
                 aMarcadores.push(sMarker);
             }
+            
             //Funcion para mostrar el popup y dejarlo de mostrar al estar encima de un marcador
             function popUpOverOut(sMarker) {
                 sMarker.on("mouseover", function (e) {
@@ -171,6 +172,24 @@ function obteniendoDatos() {
 function crearSeleccionado(sId, aDatos) {
     for (let i = 0; i < aDatos.length; i++) {
         if (aDatos[i].id == sId) {
+            //Si hay datos se mostrara estos iconos si no, no aparecera nada
+            let temp = "&deg;C";
+            let hume = "%";
+            let vient = "km/h";
+            let preci = "mm=l/m²";
+            if(aDatos[i].temperatura == "No hay datos"){
+                temp = "";
+            }
+            if(aDatos[i].humedad == "No hay datos"){
+                hume = "";
+            }
+            if(aDatos[i].velocidadViento == "No hay datos"){
+                vient = "";
+            }
+            if(aDatos[i].precipitacionAcumulada == "No hay datos"){
+                preci = "";
+            }
+
             let sCrearDiv =
                 `
             <div id="${sId}" class="opcionElegida ">
@@ -180,19 +199,19 @@ function crearSeleccionado(sId, aDatos) {
                 </div>
                 <div class="informacion-cuadrado mostrar-info" id="divTemperature">
                     <p>Temperatura:</p>
-                    <b><p>${aDatos[i].temperatura} &deg;C</p></b>
+                    <b><p>${aDatos[i].temperatura} ${temp}</p></b>
                 </div>
                 <div class="informacion-cuadrado mostrar-info" id="divHumidity">
                     <p>Humedad:</p>
-                    <b><p>${aDatos[i].humedad}%</p></b>
+                    <b><p>${aDatos[i].humedad}${hume}</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divWind">
                     <p>Viento:</p>
-                    <b><p>${aDatos[i].velocidadViento} km/h</p></b>
+                    <b><p>${aDatos[i].velocidadViento} ${vient}</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divRaining">
                     <p>Precipitacion:</p>
-                    <b><p>${aDatos[i].precipitacionAcumulada} mm=l/m²</p></b>
+                    <b><p>${aDatos[i].precipitacionAcumulada} ${preci}</p></b>
                 </div>
             </div>
             `;
