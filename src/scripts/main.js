@@ -198,7 +198,6 @@ function crearSeleccionado(sId, aDatos) {
             `;
             document.getElementById("seleccionados").innerHTML += sCrearDiv;
         }
-
     }
 }
 
