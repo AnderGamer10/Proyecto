@@ -196,6 +196,7 @@ function crearSeleccionado(sId, aDatos) {
                     <h3>${aDatos[i].nombre}</h3>
                     <button type="button" class="btn-close" aria-label="Close"></button>
                 </div>
+                <hr>
                 <div class="informacion-cuadrado mostrar-info" id="divTemperature">
                     <p>Temperatura:</p>
                     <b><p>${aDatos[i].temperatura} ${temp}</p></b>
