@@ -341,4 +341,31 @@ function cambioTamanoInformacion() {
         $("#informacion").animate({ height: 520 }, 1000);
 }
 
+
+
+
+/* ---------------------------------- Login -------------------------------------- */ 
+$(document).ready(function() {
+    function getToken(form){
+      var formData = $(form).serialize();
+      $.post("https://api.dummyurl.test", formData).done(function(result){
+        alert(result);
+        console.log(result)
+      })
+      return true;
+    }
+
+  })
+
+/* ------------------------------- Fin Login ------------------------------------- */ 
+
+
+
+
 obteniendoDatos();
+
+
+
+
+
+
