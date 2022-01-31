@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "yarn@3.0.2",
   "scripts": {
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --public-url /2daw3/anderr/Proyecto",
     "start": "parcel serve index.html --open"
   },
   "devDependencies": {

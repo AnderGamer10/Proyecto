@@ -11,10 +11,10 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(mapa);
 
 //Marcadores seleccionados
-aSeleccionados = [];
+var aSeleccionados = [];
 
 //Todos los marcadores
-aMarcadores = [];
+var aMarcadores = [];
 
 //Variables para cambiar el color de los marcadores
 var redIcon = new L.Icon({
@@ -39,7 +39,6 @@ function obteniendoDatos() {
         .then(response => response.json())
         .then(aDatos => {
             console.log(aDatos);
-
             //Funcion para crear los marcadores y el localStorage
             function crearMarcadores() {
                 if (localStorage.IDs == null)
