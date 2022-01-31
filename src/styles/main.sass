@@ -1,5 +1,8 @@
 *
     font-family: 'Quicksand', sans-serif
+    margin: 0
+    padding: 0
+    box-sizing: border-box
 html
     height: 100vh 
     width: 100vw
@@ -8,69 +11,89 @@ body
     height: 100%
     width: 100%
     background-color: #e9dddd
-header
-    height: 10%
-    h1
-        color: white
-        text-align: center
+nav
+    height: 8%
+    .navbar-brand
+            font-size: 30px
 
-#container
-    height: 80%
-    width: 80%
-    margin: auto
-    #informacion
-        width: 20%
-        height: 60%
-        hr
-            width: 70%
-        #container-info
-            margin-left: 15px
-            margin-top: 20px
-            .container-informacion
-                .datos
-                    display: none
-                    margin: auto
-                    p
-                        text-align: justify
-                        color: black
-                        font-size: 16px
-                .nombre-dato
-                    width: 50%
-                    margin-left: 5px
-                    color: #353535
-                    display: flex
-                    flex-direction: row
-                    .bi
-                        margin-left: 3px
-                        margin-top: 3px
-                    h4:hover
-                        color: #272727
-                        font-weight: bolder
-    #filtro-map-info
-        width: 80%
-        height: 60%
-        #filtro-mini
-            height: 14%
+#informacion
+    width: 12%
+    height: 300px
+    position: fixed
+    background-color: white
+    margin-left: 1.5%
+    margin-top: 2%
+    h2
+        margin-left: 5px
+    hr
+        width: 85%
+        margin: auto
+    #container-info
+        margin-top: 20px
+        width: 100%
+        .container-informacion
             width: 90%
-            margin: auto
-            margin-top: 5px
-            margin-bottom: 5px
-            #filtro
-                height: 100%
+            .datos
                 width: 90%
-                border: 1px solid
-                border-radius: 25px
-                h2
-                    margin-left: 10px
-            #mini-map
-                height: 100%
-                width: 10%
-                margin-left: 2%
-                i
-                    font-size: 50px
-        #map
-            height: 82%
+                display: none
+                margin: auto
+                p
+                    text-align: justify
+                    color: black
+                    font-size: 16px
+            .nombre-dato
+                width: 50%
+                margin-left: 3%
+                color: #353535
+                display: flex
+                flex-direction: row
+                .bi
+                    margin-left: 3px
+                    margin-top: 3px
+                h4:hover
+                    color: #272727
+                    font-weight: bolder
+                img
+                    width: 30px
+                    height: 30px
+                    margin-left: auto
+#container
+    height: 82%
+    width: 70%
+    margin: auto
+    #filtro-mini
+        height: 9%
+        width: 80%
+        margin: auto
+        margin-bottom: 5px
+        #filtro
+            height: 100%
             width: 95%
+            border: 1px solid
+            border-radius: 25px
+            h2
+                margin: auto
+                margin-left: 10px
+            select
+                margin: auto
+                margin-left: -30%
+                height: 50%
+                background: none
+                color: white
+                option
+                    color: black
+        #mini-map
+            height: 100%
+            width: 5%
+            i
+                font-size: 40px
+    #map-info
+        width: 100%
+        height: 55%
+        margin: auto
+        #map
+            height: 90%
+            width: 85%
             margin: auto
             border-radius: 5px
         #info-selec-marc 
@@ -83,30 +106,28 @@ header
             p
                 margin: auto
     #opciones-seleccionados
-        margin-top: 2%
-        height: 38%
+        height: 35%
         width: 100%
         #imagenes
-            margin: auto
             width: 20%
-            height: 100%
-            .img-sep
-                margin-left: auto
-                margin-right: auto
-                margin-top: 20%
-            img 
-                width: 55px
-                height: 55px
+            margin: auto
+            #centrar
                 margin: auto
-                p
-                    margin-right: 5px
+                border: 3px solid
+                border-radius: 5px
+                img 
+                    width: 55px
+                    height: 55px
+                    margin: 5px
+        .row
+            --bs-gutter-x: 0rem
         #seleccionados
             width: 80%
             height: 100%
             .opcionElegida
-                width: 24%
-                height: 80%
                 border: 1px solid
+                height: 80%
+                max-width: 24%
                 margin: auto
                 border-radius: 15px
                 #elegida-info
@@ -114,6 +135,7 @@ header
                     margin-right: 5px
                     .btn-close
                         margin-left: auto
+                        margin-top: 3px
                 .informacion-cuadrado
                     display: flex
                     flex-direction: row
@@ -125,9 +147,9 @@ header
                     flex-wrap: wrap
             .opcionElegida:hover
                 box-shadow: 5px 5px 5px #888
+
 footer
     height: 10%
-    position: fixed
     width: 100%
     #copy
         margin-left: 25px
@@ -139,27 +161,52 @@ footer
             font-size: 30px
 
 
-@media (max-width: 920px)
+@media ( max-width: 1450px )
     #informacion
         display: none
     #container
         width: 100%
-        height: 100%
-        #filtro-map-info 
-            width: 100% 
+        
+@media ( max-width: 971px )
+    #container
+        height: auto
+        width: 100vw
+        #filtro-mini
             #filtro
-                height: 8%
+                padding-bottom: 20px
+                margin: auto
+                select
+                    margin-left: -10%
+        #map-info
+            #map
+                width: 100%
+                height: 300px
             #info-selec-marc
                 width: 60%
         #opciones-seleccionados
+            width: 100%
+            margin: auto
             flex-direction: column !important
-            #seleccionados
-                flex-direction: column !important
-                width: 100%
-                .opcionElegida
-                    width: 90%
             #imagenes
-                width: 40%
-                flex-direction: row !important
-                #img-sep
-                    flex-direction: row !important
+                width: 100%
+                #centrar
+                    display: flex
+                    flex-direction: row 
+                    margin: auto
+            #seleccionados
+                margin: auto
+                margin-bottom: 20px
+                margin-top: 20px
+                width: 80%
+                .opcionElegida
+                    max-width: 49%            
+    nav
+        height: auto
+
+@media ( max-width: 700px )
+    #container
+        #opciones-seleccionados
+            width: 65%
+            #seleccionados
+                .opcionElegida
+                    max-width: 100%

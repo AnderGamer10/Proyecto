@@ -272,12 +272,12 @@ __metadata:
   linkType: hard
 
 "@babel/types@npm:^7.8.3":
-  version: 7.16.7
-  resolution: "@babel/types@npm:7.16.7"
+  version: 7.16.8
+  resolution: "@babel/types@npm:7.16.8"
   dependencies:
     "@babel/helper-validator-identifier": ^7.16.7
     to-fast-properties: ^2.0.0
-  checksum: df9210723259df9faea8c7e5674a59e57ead82664aab9f54daae887db5a50a956f30f57ed77a2d6cbb89b908d520cf8d883267c4e9098e31bc74649f2f714654
+  checksum: 4f6a187b2924df70e21d6e6c0822f91b1b936fe060bc92bb477b93bd8a712c88fe41a73f85c0ec53b033353374fe33e773b04ffc340ad36afd8f647dd05c4ee1
   languageName: node
   linkType: hard
 
@@ -3815,11 +3815,11 @@ fsevents@~2.3.2:
   linkType: hard
 
 "jquery-ui@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "jquery-ui@npm:1.13.0"
+  version: 1.13.1
+  resolution: "jquery-ui@npm:1.13.1"
   dependencies:
     jquery: ">=1.8.0 <4.0.0"
-  checksum: 8c4881cdd2ae5aa54c2f62200f27d965417f2a136ca6ce28571cdf80eb12dcd651ce6622ee09d1a45eb27272795c69fe0de14f4742840bd08f9e3331de959d11
+  checksum: 5eba4be23cad9a173b222a1a28c5126416209b3923ec5f0f83d85aaab385d567a23f3a399889b0f83dedfe13fafa55d32dc4deb9a13aa138cbca9a1b863fe4a1
   languageName: node
   linkType: hard
 
@@ -4385,9 +4385,9 @@ fsevents@~2.3.2:
   linkType: hard
 
 "negotiator@npm:^0.6.2":
-  version: 0.6.2
-  resolution: "negotiator@npm:0.6.2"
-  checksum: dfddaff6c06792f1c4c3809e29a427b8daef8cd437c83b08dd51d7ee11bbd1c29d9512d66b801144d6c98e910ffd8723f2432e0cbf8b18d41d2a09599c975ab3
+  version: 0.6.3
+  resolution: "negotiator@npm:0.6.3"
+  checksum: b8ffeb1e262eff7968fc90a2b6767b04cfd9842582a9d0ece0af7049537266e7b2506dfb1d107a32f06dd849ab2aea834d5830f7f4d0e5cb7d36e1ae55d021d9
   languageName: node
   linkType: hard
 
