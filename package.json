@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "yarn@3.0.2",
   "scripts": {
-    "build": "parcel build index.html main.html --public-url /2daw3/anderr/Proyecto",
-    "start": "parcel serve index.html main.html --open"
+    "build": "parcel build index.html --public-url /2daw3/anderr/Proyecto",
+    "start": "parcel serve index.html --open"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.0.1",
