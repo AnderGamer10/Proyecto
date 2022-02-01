@@ -148,7 +148,7 @@ function obteniendoDatos() {
                 popUpOverOut(sMarker);
                 aMarcadores.push(sMarker);
             }
-            
+
             //Funcion para mostrar el popup y dejarlo de mostrar al estar encima de un marcador
             function popUpOverOut(sMarker) {
                 sMarker.on("mouseover", function (e) {
@@ -176,16 +176,16 @@ function crearSeleccionado(sId, aDatos) {
             let hume = "%";
             let vient = "km/h";
             let preci = "mm=l/m²";
-            if(aDatos[i].temperatura == "No hay datos"){
+            if (aDatos[i].temperatura == "No hay datos") {
                 temp = "";
             }
-            if(aDatos[i].humedad == "No hay datos"){
+            if (aDatos[i].humedad == "No hay datos") {
                 hume = "";
             }
-            if(aDatos[i].velocidadViento == "No hay datos"){
+            if (aDatos[i].velocidadViento == "No hay datos") {
                 vient = "";
             }
-            if(aDatos[i].precipitacionAcumulada == "No hay datos"){
+            if (aDatos[i].precipitacionAcumulada == "No hay datos") {
                 preci = "";
             }
 
@@ -331,6 +331,7 @@ $(document).ready(function () {
     $("#mini-map").on("click", function () {
         $("#map-info").slideToggle(1000);
     });
+
 });
 
 //Sirve para aumentar el tamaño del div de informacion para que no se quede fuera
@@ -340,27 +341,6 @@ function cambioTamanoInformacion() {
     else
         $("#informacion").animate({ height: 520 }, 1000);
 }
-
-
-
-
-/* ---------------------------------- Login -------------------------------------- */ 
-$(document).ready(function() {
-    function getToken(form){
-      var formData = $(form).serialize();
-      $.post("https://api.dummyurl.test", formData).done(function(result){
-        alert(result);
-        console.log(result)
-      })
-      return true;
-    }
-
-  })
-
-/* ------------------------------- Fin Login ------------------------------------- */ 
-
-
-
 
 obteniendoDatos();
 
