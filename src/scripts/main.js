@@ -1,37 +1,6 @@
 import { map } from 'jquery';
 import L from 'leaflet';
 
-$(document).ready(function () {
-    $("#btn-login").on("click", function () {
-      fetch("https://localhost:5001/Users/authenticate", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "username":  $("#UsernameX").val(),
-          "password": $("#PasswordX").val(),
-        }),
-      })
-      .then(response => {
-         if(response.ok) {
-             return response.json()
-         }
-      })
-      .then(e => {
-        console.log(e.token);
-        localStorage.setItem("token", e.token)
-        document.getElementById("login").style.display = "none";
-        document.getElementById("sesionIniciada").style.display="inline";
-        obteniendoDatos();
-      })
-      .catch(err => {
-         console.log("Usuario o contraseña mal introducida");
-      });
-})
-})
-
-
 
 //mapa
 const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898], 11);
@@ -65,15 +34,50 @@ var blueIcon = new L.Icon({
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
 });
+// if(localStorage.getItem("token") == undefined || localStorage.getItem("token") == "")
 
+document.getElementById("btn-login").addEventListener("click", enviarDatos);
+
+function enviarDatos() {
+    fetch("https://localhost:5001/Users/authenticate", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "username": $("#UsernameX").val(),
+            "password": $("#PasswordX").val(),
+        }),
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }else{
+                localStorage.setItem("sesion", "false")
+            }
+        })
+        .then(e => {
+            localStorage.setItem("token", e.token)
+            localStorage.setItem("sesion", "true")
+            $("#login").hide();
+            $("#informacion").show();
+            $("footer").show();
+            $("#container").show();
+            obteniendoDatos();
+        })
+        .catch(err => {
+            window.alert("Usuario o contraseña mal introducida");
+            console.log("Usuario o contraseña mal introducida");
+        });
+}
 
 // localStorage.getItem("token")
 function obteniendoDatos() {
     fetch("https://localhost:5001/api/InformacionTiempoes", {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization':`Bearer ${localStorage.getItem("token")}`,
-          }
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        }
     }).then(response => response.json())
         .then(aDatos => {
             console.log(aDatos);
