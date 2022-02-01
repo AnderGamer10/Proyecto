@@ -1,16 +1,6 @@
 import { map } from 'jquery';
 import L from 'leaflet';
 
-
-//mapa
-const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898], 11);
-
-//"Comentarios" de la parte inferior derecha del mapa
-L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '<a href="http://185.60.40.210/2daw3/anderr/">Mi portfolio</a> &copy; ',
-    maxZoom: 18
-}).addTo(mapa);
-
 //Marcadores seleccionados
 var aSeleccionados = [];
 
@@ -34,7 +24,6 @@ var blueIcon = new L.Icon({
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
 });
-// if(localStorage.getItem("token") == undefined || localStorage.getItem("token") == "")
 
 document.getElementById("btn-login").addEventListener("click", enviarDatos);
 
@@ -52,17 +41,12 @@ function enviarDatos() {
         .then(response => {
             if (response.ok) {
                 return response.json()
-            }else{
-                localStorage.setItem("sesion", "false")
             }
         })
         .then(e => {
             localStorage.setItem("token", e.token)
-            localStorage.setItem("sesion", "true")
             $("#login").hide();
-            $("#informacion").show();
-            $("footer").show();
-            $("#container").show();
+            $("#inicioSesion").show();
             obteniendoDatos();
         })
         .catch(err => {
@@ -80,6 +64,15 @@ function obteniendoDatos() {
         }
     }).then(response => response.json())
         .then(aDatos => {
+
+            //mapa
+            const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898], 11);
+            //"Comentarios" de la parte inferior derecha del mapa
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '<a href="http://185.60.40.210/2daw3/anderr/">Mi portfolio</a> &copy; ',
+                maxZoom: 18
+            }).addTo(mapa);
+
             console.log(aDatos);
             //Funcion para crear los marcadores y el localStorage
             function crearMarcadores() {
