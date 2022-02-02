@@ -25,8 +25,8 @@ var blueIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
+//Si hay token o el token es valido se mostrara el mapa... si no se mostrara la parte del login para poder loguearse
 comprobarToken();
-
 function comprobarToken(){
     fetch("https://localhost:5001/api/InformacionTiempoes", {
         headers: {
@@ -43,8 +43,8 @@ function comprobarToken(){
     })
 }
 
+//Funcion para iniciar sesion, la cual mostrara los datos si el usuario y contraseña estan bien
 document.getElementById("btn-login").addEventListener("click", inicioSesion);
-
 function inicioSesion() {
     fetch("https://localhost:5001/Users/authenticate", {
         method: "POST",
@@ -60,8 +60,8 @@ function inicioSesion() {
                 return response.json()
             }
         })
-        .then(e => {
-            localStorage.setItem("token", e.token)
+        .then(response => {
+            localStorage.setItem("token", response.token)
             $("#login").hide();
             $("#inicioSesion").show();
             obteniendoDatos();
@@ -72,7 +72,7 @@ function inicioSesion() {
         });
 }
 
-// localStorage.getItem("token")
+//Obteniendo los datos de euskalmet teniendo un token
 function obteniendoDatos() {
     fetch("https://localhost:5001/api/InformacionTiempoes", {
         headers: {
@@ -125,7 +125,7 @@ function obteniendoDatos() {
 
             //Funcion para crear los filtros
             function selectsFiltro() {
-                let selecccionEstacion = `<select id="selEstacion" name="Estaciones">
+                let sSelecccionEstacion = `<select id="selEstacion" name="Estaciones">
                 <option value="none">Estaciones</option>
                 <option value="BUOY">Plataformas</option>
                 <option value="METEOROLOGICAL">Meteorologico</option>
@@ -133,7 +133,7 @@ function obteniendoDatos() {
                 <option value="QUALITY">De calidad</option>
                 </select>
                 `;
-                let selecccionProvincia = `<select id="selProvincia" name="Provincias">
+                let sSelecccionProvincia = `<select id="selProvincia" name="Provincias">
                 <option value="none">Provincias</option>
                 <option value="Bizkaia">Bizkaia</option>
                 <option value="Gipuzkoa">Gipuzkoa</option>
@@ -142,12 +142,12 @@ function obteniendoDatos() {
                 <option value="Navarra">Navarra</option>
                 </select>
                 `;
-                $("#filtro").append(selecccionEstacion);
-                $("#filtro").append(selecccionProvincia);
+                $("#filtro").append(sSelecccionEstacion);
+                $("#filtro").append(sSelecccionProvincia);
 
                 $("select").on("change", function () {
-                    let cambioEstaciones = document.getElementById("selEstacion").value;
-                    let cambioProvincias = document.getElementById("selProvincia").value;
+                    let sCambioEstaciones = document.getElementById("selEstacion").value;
+                    let sCambioProvincias = document.getElementById("selProvincia").value;
 
                     //Eliminamos del mapa los markers para añadirlo de nuevo segun el filtro
                     aMarcadores.forEach(i => {
@@ -156,19 +156,19 @@ function obteniendoDatos() {
                     aMarcadores = [];
 
                     //If else para saber la seleccion de filtro
-                    if (cambioEstaciones == "none" && cambioProvincias == "none") {
+                    if (sCambioEstaciones == "none" && sCambioProvincias == "none") {
                         crearMarcadores();
-                    } else if (cambioEstaciones == "none" && cambioProvincias != "none") {
+                    } else if (sCambioEstaciones == "none" && sCambioProvincias != "none") {
                         for (let i = 0; i < aDatos.length; i++) {
-                            if (aDatos[i].provincia == cambioProvincias) {
+                            if (aDatos[i].provincia == sCambioProvincias) {
                                 añadirMakerAMapa(i);
                             } else {
                                 añadirMarkerArray(i);
                             }
                         }
-                    } else if (cambioEstaciones != "none" && cambioProvincias == "none") {
+                    } else if (sCambioEstaciones != "none" && sCambioProvincias == "none") {
                         for (let i = 0; i < aDatos.length; i++) {
-                            if (aDatos[i].tipoEstacion == cambioEstaciones) {
+                            if (aDatos[i].tipoEstacion == sCambioEstaciones) {
                                 añadirMakerAMapa(i);
                             } else {
                                 añadirMarkerArray(i);
@@ -176,7 +176,7 @@ function obteniendoDatos() {
                         }
                     } else {
                         for (let i = 0; i < aDatos.length; i++) {
-                            if (aDatos[i].provincia == cambioProvincias && aDatos[i].tipoEstacion == cambioEstaciones) {
+                            if (aDatos[i].provincia == sCambioProvincias && aDatos[i].tipoEstacion == sCambioEstaciones) {
                                 añadirMakerAMapa(i);
                             } else {
                                 añadirMarkerArray(i);
@@ -184,7 +184,6 @@ function obteniendoDatos() {
                         }
                     }
                     colorearSeleccionados();
-
                 });
             }
 
@@ -223,22 +222,23 @@ function obteniendoDatos() {
 function crearSeleccionado(sId, aDatos) {
     for (let i = 0; i < aDatos.length; i++) {
         if (aDatos[i].id == sId) {
+
             //Si hay datos se mostrara estos iconos si no, no aparecera nada
-            let temp = "&deg;C";
-            let hume = "%";
-            let vient = "km/h";
-            let preci = "mm=l/m²";
+            let sTemp = "&deg;C";
+            let sHume = "%";
+            let sVient = "km/h";
+            let sPreci = "mm=l/m²";
             if (aDatos[i].temperatura == "No hay datos") {
-                temp = "";
+                sTemp = "";
             }
             if (aDatos[i].humedad == "No hay datos") {
-                hume = "";
+                sHume = "";
             }
             if (aDatos[i].velocidadViento == "No hay datos") {
-                vient = "";
+                sVient = "";
             }
             if (aDatos[i].precipitacionAcumulada == "No hay datos") {
-                preci = "";
+                sPreci = "";
             }
 
             let sCrearDiv =
@@ -251,19 +251,19 @@ function crearSeleccionado(sId, aDatos) {
                 <hr>
                 <div class="informacion-cuadrado mostrar-info" id="divTemperature">
                     <p>Temperatura:</p>
-                    <b><p>${aDatos[i].temperatura} ${temp}</p></b>
+                    <b><p>${aDatos[i].temperatura} ${sTemp}</p></b>
                 </div>
                 <div class="informacion-cuadrado mostrar-info" id="divHumidity">
                     <p>Humedad:</p>
-                    <b><p>${aDatos[i].humedad}${hume}</p></b>
+                    <b><p>${aDatos[i].humedad}${sHume}</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divWind">
                     <p>Viento:</p>
-                    <b><p>${aDatos[i].velocidadViento} ${vient}</p></b>
+                    <b><p>${aDatos[i].velocidadViento} ${sVient}</p></b>
                 </div>
                 <div class="informacion-cuadrado" id="divRaining">
                     <p>Precipitacion:</p>
-                    <b><p>${aDatos[i].precipitacionAcumulada} ${preci}</p></b>
+                    <b><p>${aDatos[i].precipitacionAcumulada} ${sPreci}</p></b>
                 </div>
             </div>
             `;
@@ -383,6 +383,7 @@ $(document).ready(function () {
         $("#map-info").slideToggle(1000);
     });
 
+    //Al cerrar sesion se borrara el token y se recargara la pagina
     $("#CerrarSesion").on("click", function () {
         localStorage.setItem("token", "");
         location.reload();
