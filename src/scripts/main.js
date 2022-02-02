@@ -25,9 +25,27 @@ var blueIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-document.getElementById("btn-login").addEventListener("click", enviarDatos);
+comprobarToken();
 
-function enviarDatos() {
+function comprobarToken(){
+    fetch("https://localhost:5001/api/InformacionTiempoes", {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        }
+    }).then(response => {
+        if (response.ok) {
+            $("#inicioSesion").show();
+            obteniendoDatos();
+        }else{
+            $("#login").show();
+        }
+    })
+}
+
+document.getElementById("btn-login").addEventListener("click", inicioSesion);
+
+function inicioSesion() {
     fetch("https://localhost:5001/Users/authenticate", {
         method: "POST",
         headers: {
@@ -37,8 +55,7 @@ function enviarDatos() {
             "username": $("#UsernameX").val(),
             "password": $("#PasswordX").val(),
         }),
-    })
-        .then(response => {
+    }).then(response => {
             if (response.ok) {
                 return response.json()
             }
@@ -67,13 +84,13 @@ function obteniendoDatos() {
 
             //mapa
             const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898], 11);
+
             //"Comentarios" de la parte inferior derecha del mapa
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '<a href="http://185.60.40.210/2daw3/anderr/">Mi portfolio</a> &copy; ',
                 maxZoom: 18
             }).addTo(mapa);
-
-            console.log(aDatos);
+            
             //Funcion para crear los marcadores y el localStorage
             function crearMarcadores() {
                 if (localStorage.IDs == null)
@@ -279,8 +296,7 @@ function borrarSeleccionada(aDatos) {
         //Obtenemos el id y posicion del id en seleccionados
         let sId = this.closest(".opcionElegida").id;
         let sIdx = aSeleccionados.indexOf(sId);
-        if (sIdx != -1)
-            aSeleccionados.splice(sIdx, 1);
+        if (sIdx != -1) aSeleccionados.splice(sIdx, 1);
         //Borramos del local storage
         for (let i = 0; i < aDatos.length; i++) {
             if (aDatos[i].id == sId) {
@@ -367,6 +383,10 @@ $(document).ready(function () {
         $("#map-info").slideToggle(1000);
     });
 
+    $("#CerrarSesion").on("click", function () {
+        localStorage.setItem("token", "");
+        location.reload();
+    });
 });
 
 //Sirve para aumentar el tamaño del div de informacion para que no se quede fuera
