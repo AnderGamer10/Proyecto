@@ -1,5 +1,12 @@
+$MedioBlanco: rgba(233,221,221)
+$Blanco: rgba(255,255,255)
+$Negro: rgba(0,0,0)
+$NegroBlanquezino: rgba(53,53,53)
+$NegroGrisazeo: rgba(39,39,39)
+$Fuente: 'Quicksand', sans-serif
+
 *
-    font-family: 'Quicksand', sans-serif
+    font-family: $Fuente
     margin: 0
     padding: 0
     box-sizing: border-box
@@ -10,7 +17,7 @@ html
 body
     height: 100%
     width: 100%
-    background-color: #e9dddd
+    background-color: $MedioBlanco
 nav
     height: 8%
     .navbar-brand
@@ -21,11 +28,12 @@ nav
     height: 100%
 #login
     display: none
+
 #informacion
     width: 12%
     height: 300px
     position: fixed
-    background-color: white
+    background-color: $Blanco
     margin-left: 1.5%
     margin-top: 4%
     h3
@@ -43,19 +51,19 @@ nav
                 margin: auto
                 p
                     text-align: justify
-                    color: black
+                    color: $Negro
                     font-size: 16px
             .nombre-dato
                 width: 100%
                 margin-left: 3%
-                color: #353535
+                color: $NegroBlanquezino
                 display: flex
                 flex-direction: row
                 .bi
                     margin-left: 3px
                     margin-top: 3px
                 h4:hover
-                    color: #272727
+                    color: $NegroGrisazeo
                     font-weight: bolder
                 img
                     margin-left: auto
@@ -83,9 +91,9 @@ nav
                 margin-left: -10%
                 height: 50%
                 background: none
-                color: white
+                color: $Blanco
                 option
-                    color: black
+                    color: $Negro
         #mini-map
             height: 100%
             width: 5%
