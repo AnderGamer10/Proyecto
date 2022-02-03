@@ -9,16 +9,16 @@ var aMarcadores = [];
 
 //Variables para cambiar el color de los marcadores
 var redIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconUrl: 'http://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
 });
 var blueIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconUrl: 'http://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -28,7 +28,7 @@ var blueIcon = new L.Icon({
 //Si hay token o el token es valido se mostrara el mapa... si no se mostrara la parte del login para poder loguearse
 comprobarToken();
 function comprobarToken(){
-    fetch("https://localhost:5001/api/InformacionTiempoes", {
+    fetch("http://10.10.17.177:5000/api/InformacionTiempoes", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -46,7 +46,7 @@ function comprobarToken(){
 //Funcion para iniciar sesion, la cual mostrara los datos si el usuario y contraseña estan bien
 document.getElementById("btn-login").addEventListener("click", inicioSesion);
 function inicioSesion() {
-    fetch("https://localhost:5001/Users/authenticate", {
+    fetch("http://10.10.17.177:5000/Users/authenticate", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ function inicioSesion() {
 
 //Obteniendo los datos de euskalmet teniendo un token
 function obteniendoDatos() {
-    fetch("https://localhost:5001/api/InformacionTiempoes", {
+    fetch("http://10.10.17.177:5000/api/InformacionTiempoes", {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -275,7 +275,7 @@ function crearSeleccionado(sId, aDatos) {
 //Obtenemos datos de los almacenados
 function almacenadosLocalStorage(aDatos) {
     if (localStorage.length != null) {
-        aAñadirArray = JSON.parse(localStorage.IDs);
+        var aAñadirArray = JSON.parse(localStorage.IDs);
         for (let i = 0; i < aAñadirArray.length; i++) {
             for (let j = 0; j < aDatos.length; j++) {
                 if (aMarcadores[j].options.myId == aAñadirArray[i]) {
