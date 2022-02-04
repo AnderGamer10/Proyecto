@@ -318,7 +318,7 @@ function meterDatos(sId){
         let sIdx = aSeleccionados[j][0].indexOf(sId);
         if (sIdx != -1){
             if(aSeleccionados[j][1] == "true"){
-                $(`#${sId}`).find("#divTatemperure").addClass("mostrar-info");
+                $(`#${sId}`).find("#divTemperature").addClass("mostrar-info");
             }
             if(aSeleccionados[j][2] == "true"){
                 $(`#${sId}`).find("#divHumidity").addClass("mostrar-info");
@@ -337,24 +337,40 @@ function meterDatos(sId){
 function activarDroppable() {
     $(".opcionElegida").droppable({
         drop: function (event, ui) {
-            let sIdTipoDeDato = ui.draggable.attr("id").substring(3)
-            $(this).find(`#div${sIdTipoDeDato}`).addClass("mostrar-info");
-            for(let i = 0; i < aSeleccionados.length;i++){
-                let sIdx = aSeleccionados[i][0].indexOf(this.id);
-                if (sIdx != -1){
-                    switch(sIdTipoDeDato){
-                        case "Temperature":
-                            aSeleccionados[i][1] = "true";
-                            break;
-                        case "Humidity":
-                            aSeleccionados[i][2] = "true";
-                            break;
-                        case "Wind":
-                            aSeleccionados[i][3] = "true";
-                            break;
-                        case "Raining":
-                            aSeleccionados[i][4] = "true";
-                            break;    
+            let papelera = ui.draggable.attr("id");
+            let sIdTipoDeDato = ui.draggable.attr("id").substring(3);
+            if (papelera == "Papelera") {
+                $(this).find(`#divHumidity`).removeClass("mostrar-info");
+                $(this).find(`#divWind`).removeClass("mostrar-info");
+                $(this).find(`#divRaining`).removeClass("mostrar-info");
+                for (let i = 0; i < aSeleccionados.length; i++) {
+                    console.log("borrando")
+                    let sIdx = aSeleccionados[i][0].indexOf(this.id);
+                    if (sIdx != -1) {
+                        aSeleccionados[i][2] = "false";
+                        aSeleccionados[i][3] = "false";
+                        aSeleccionados[i][4] = "false";
+                    }
+                }
+            }else{
+                $(this).find(`#div${sIdTipoDeDato}`).addClass("mostrar-info");
+                for(let i = 0; i < aSeleccionados.length;i++){
+                    let sIdx = aSeleccionados[i][0].indexOf(this.id);
+                    if (sIdx != -1){
+                        switch(sIdTipoDeDato){
+                            case "Temperature":
+                                aSeleccionados[i][1] = "true";
+                                break;
+                            case "Humidity":
+                                aSeleccionados[i][2] = "true";
+                                break;
+                            case "Wind":
+                                aSeleccionados[i][3] = "true";
+                                break;
+                            case "Raining":
+                                aSeleccionados[i][4] = "true";
+                                break;    
+                        }
                     }
                 }
             }
@@ -376,6 +392,7 @@ function colorearSeleccionados() {
 
 $(document).ready(function () {
     //Activamos el draggable en las imagenes de las opciones
+    $("#Papelera").draggable({ helper: "clone" });
     $("#imgTemperature").draggable({ helper: "clone" });
     $("#imgHumidity").draggable({ helper: "clone" });
     $("#imgWind").draggable({ helper: "clone" });
