@@ -1,10 +1,8 @@
-$MedioBlanco: rgba(233,221,221)
 $Blanco: rgba(255,255,255)
 $Negro: rgba(0,0,0)
 $NegroBlanquezino: rgba(53,53,53)
 $NegroGrisazeo: rgba(39,39,39)
 $Fuente: 'Quicksand', sans-serif
-
 *
     font-family: $Fuente
     margin: 0
@@ -17,7 +15,7 @@ html
 body
     height: 100%
     width: 100%
-    background-color: $MedioBlanco
+    background-image: url("../images/fondo.jpg")
 nav
     height: 8%
     .navbar-brand
@@ -29,46 +27,6 @@ nav
 #login
     display: none
 
-#informacion
-    width: 12%
-    height: 300px
-    position: fixed
-    background-color: $Blanco
-    margin-left: 1.5%
-    margin-top: 4%
-    h3
-        margin-left: 10px
-    hr
-        width: 85%
-        margin: auto
-    #container-info
-        margin-top: 20px
-        width: 100%
-        .container-informacion
-            .datos
-                width: 90%
-                display: none
-                margin: auto
-                p
-                    text-align: justify
-                    color: $Negro
-                    font-size: 16px
-            .nombre-dato
-                width: 100%
-                margin-left: 3%
-                color: $NegroBlanquezino
-                display: flex
-                flex-direction: row
-                .bi
-                    margin-left: 3px
-                    margin-top: 3px
-                h4:hover
-                    color: $NegroGrisazeo
-                    font-weight: bolder
-                img
-                    margin-left: auto
-                    width: 30px
-                    height: 30px
 #container
     height: 82%
     width: 70%

@@ -9,16 +9,16 @@ var aMarcadores = [];
 
 //Variables para cambiar el color de los marcadores
 var redIcon = new L.Icon({
-    iconUrl: 'http://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
 });
 var blueIcon = new L.Icon({
-    iconUrl: 'http://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-    shadowUrl: 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -81,7 +81,6 @@ function obteniendoDatos() {
         }
     }).then(response => response.json())
         .then(aDatos => {
-
             //mapa
             const mapa = L.map('map').setView([43.29834714763016, -1.8620285690466898], 11);
 
@@ -112,7 +111,8 @@ function obteniendoDatos() {
                         //Se añadira a un array para saber si esta seleccionado 
                         if (aSeleccionados.indexOf(sId) == -1 && aSeleccionados.length < 4) {
                             aMarcadores[i].setIcon(redIcon);
-                            aSeleccionados.push(sId);
+                            var data = [sId, "true", "false", "false", "false"];
+                            aSeleccionados.push(data);
                             localStorage.IDs = JSON.stringify(aSeleccionados);
                             crearSeleccionado(sId, aDatos);
                             borrarSeleccionada(aDatos);
@@ -222,7 +222,6 @@ function obteniendoDatos() {
 function crearSeleccionado(sId, aDatos) {
     for (let i = 0; i < aDatos.length; i++) {
         if (aDatos[i].id == sId) {
-
             //Si hay datos se mostrara estos iconos si no, no aparecera nada
             let sTemp = "&deg;C";
             let sHume = "%";
@@ -253,7 +252,7 @@ function crearSeleccionado(sId, aDatos) {
                     <p>Temperatura:</p>
                     <b><p>${aDatos[i].temperatura} ${sTemp}</p></b>
                 </div>
-                <div class="informacion-cuadrado mostrar-info" id="divHumidity">
+                <div class="informacion-cuadrado" id="divHumidity">
                     <p>Humedad:</p>
                     <b><p>${aDatos[i].humedad}${sHume}</p></b>
                 </div>
@@ -272,18 +271,20 @@ function crearSeleccionado(sId, aDatos) {
     }
 }
 
-//Obtenemos datos de los almacenados
+//Obtenemos datos de los almacenados en el local storage
 function almacenadosLocalStorage(aDatos) {
     if (localStorage.length != null) {
-        var aAñadirArray = JSON.parse(localStorage.IDs);
+        let aAñadirArray = JSON.parse(localStorage.IDs);
         for (let i = 0; i < aAñadirArray.length; i++) {
             for (let j = 0; j < aDatos.length; j++) {
-                if (aMarcadores[j].options.myId == aAñadirArray[i]) {
+                if (aMarcadores[j].options.myId == aAñadirArray[i][0]) {
                     aMarcadores[j].setIcon(redIcon);
                 }
             }
-            aSeleccionados.push(aAñadirArray[i]);
-            crearSeleccionado(aAñadirArray[i], aDatos);
+            let data = [aAñadirArray[i][0],aAñadirArray[i][1],aAñadirArray[i][2],aAñadirArray[i][3],aAñadirArray[i][4]]
+            aSeleccionados.push(data);
+            crearSeleccionado(aAñadirArray[i][0], aDatos);
+            meterDatos(aAñadirArray[i][0]);  
         }
         borrarSeleccionada(aDatos);
         activarDroppable();
@@ -293,11 +294,13 @@ function almacenadosLocalStorage(aDatos) {
 //Borramos el seleccionado
 function borrarSeleccionada(aDatos) {
     $(".btn-close").on("click", function () {
-        //Obtenemos el id y posicion del id en seleccionados
+        //Obtenemos el id y posicion del id en seleccionados y borramos del array de seleccionados
         let sId = this.closest(".opcionElegida").id;
-        let sIdx = aSeleccionados.indexOf(sId);
-        if (sIdx != -1) aSeleccionados.splice(sIdx, 1);
-        //Borramos del local storage
+        for(let i = 0; i < aSeleccionados.length;i++){
+            let sIdx = aSeleccionados[i][0].indexOf(sId);
+            if (sIdx != -1) aSeleccionados.splice([i], 1);
+        }
+        //Actualizamos el localStorage
         for (let i = 0; i < aDatos.length; i++) {
             if (aDatos[i].id == sId) {
                 localStorage.IDs = JSON.stringify(aSeleccionados);
@@ -309,16 +312,53 @@ function borrarSeleccionada(aDatos) {
     });
 }
 
+//Meter los datos en las tarjetas
+function meterDatos(sId){
+    for(let j = 0; j < aSeleccionados.length;j++){
+        let sIdx = aSeleccionados[j][0].indexOf(sId);
+        if (sIdx != -1){
+            if(aSeleccionados[j][1] == "true"){
+                $(`#${sId}`).find("#divTatemperure").addClass("mostrar-info");
+            }
+            if(aSeleccionados[j][2] == "true"){
+                $(`#${sId}`).find("#divHumidity").addClass("mostrar-info");
+            }
+            if(aSeleccionados[j][3] == "true"){
+                $(`#${sId}`).find("#divWind").addClass("mostrar-info");
+            }
+            if(aSeleccionados[j][4] == "true"){
+                $(`#${sId}`).find("#divRaining").addClass("mostrar-info");
+            }
+        }
+    }
+}
+
 //Activamos el droppable
 function activarDroppable() {
     $(".opcionElegida").droppable({
-        classes: {
-            "ui-droppable-active": "ui-state-highlight",
-            "ui-droppable-hover": "ui-state-hover"
-        },
         drop: function (event, ui) {
-            let sId = ui.draggable.attr("id").substring(3)
-            $(this).find(`#div${sId}`).addClass("mostrar-info");
+            let sIdTipoDeDato = ui.draggable.attr("id").substring(3)
+            $(this).find(`#div${sIdTipoDeDato}`).addClass("mostrar-info");
+            for(let i = 0; i < aSeleccionados.length;i++){
+                let sIdx = aSeleccionados[i][0].indexOf(this.id);
+                if (sIdx != -1){
+                    switch(sIdTipoDeDato){
+                        case "Temperature":
+                            aSeleccionados[i][1] = "true";
+                            break;
+                        case "Humidity":
+                            aSeleccionados[i][2] = "true";
+                            break;
+                        case "Wind":
+                            aSeleccionados[i][3] = "true";
+                            break;
+                        case "Raining":
+                            aSeleccionados[i][4] = "true";
+                            break;    
+                    }
+                }
+            }
+            localStorage.IDs = JSON.stringify(aSeleccionados);
         }
     });
 }
@@ -327,56 +367,19 @@ function activarDroppable() {
 function colorearSeleccionados() {
     for (let i = 0; i < aMarcadores.length; i++) {
         for (let j = 0; j < aSeleccionados.length; j++) {
-            if (aSeleccionados[j] == aMarcadores[i].options.myId) {
+            if (aSeleccionados[j][0] == aMarcadores[i].options.myId) {
                 aMarcadores[i].setIcon(redIcon);
             }
         }
     }
 }
 
-//Activamos el draggable en las imagenes de las opciones
-$(function () {
+$(document).ready(function () {
+    //Activamos el draggable en las imagenes de las opciones
     $("#imgTemperature").draggable({ helper: "clone" });
     $("#imgHumidity").draggable({ helper: "clone" });
     $("#imgWind").draggable({ helper: "clone" });
     $("#imgRaining").draggable({ helper: "clone" });
-});
-
-//Escondemos el contenido de la informacion
-$(document).ready(function () {
-    //SlideToggle y slideUp para la informacion
-    $("#container-datos1").on("click", function () {
-        $("#contenido1").slideToggle(1000);
-        cambioTamanoInformacion();
-
-        $("#contenido2").slideUp(1000);
-        $("#contenido3").slideUp(1000);
-        $("#contenido4").slideUp(1000);
-    });
-    $("#container-datos2").on("click", function () {
-        $("#contenido2").slideToggle(1000);
-        cambioTamanoInformacion();
-
-        $("#contenido1").slideUp(1000);
-        $("#contenido3").slideUp(1000);
-        $("#contenido4").slideUp(1000);
-    });
-    $("#container-datos3").on("click", function () {
-        $("#contenido3").slideToggle(1000);
-        cambioTamanoInformacion();
-
-        $("#contenido2").slideUp(1000);
-        $("#contenido1").slideUp(1000);
-        $("#contenido4").slideUp(1000);
-    });
-    $("#container-datos4").on("click", function () {
-        $("#contenido4").slideToggle(1000);
-        cambioTamanoInformacion();
-
-        $("#contenido2").slideUp(1000);
-        $("#contenido3").slideUp(1000);
-        $("#contenido1").slideUp(1000);
-    });
 
     //Para minimizar el mapa
     $("#mini-map").on("click", function () {
@@ -389,19 +392,3 @@ $(document).ready(function () {
         location.reload();
     });
 });
-
-//Sirve para aumentar el tamaño del div de informacion para que no se quede fuera
-function cambioTamanoInformacion() {
-    if ($("#informacion").height() != 300)
-        $("#informacion").animate({ height: 300 }, 1000);
-    else
-        $("#informacion").animate({ height: 520 }, 1000);
-}
-
-
-
-
-
-
-
-
